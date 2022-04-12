@@ -1,3 +1,3 @@
 # DS_112_FinalProject
 
-This is the Final Project. Brian was here
+Final Project by Daniel and Brian
