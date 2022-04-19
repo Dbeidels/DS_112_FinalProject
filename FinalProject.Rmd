@@ -65,7 +65,24 @@ vgsales %>%
 
 ```
 
-
+```{r}
+vgsales %>%
+  group_by( Year,Genre) %>% 
+  summarize(total_NA_genre_sum = sum(NA_Sales), 
+            total_EU_genre_sum = sum(EU_Sales), 
+            total_JP_genre_sum = sum(JP_Sales),
+            total_other_genre_sum = sum(Other_Sales)) %>% 
+  ungroup() %>% 
+  complete(Year,Genre) %>% 
+  arrange(Genre,Year) %>% 
+  group_by(Genre) %>% 
+  replace_na(list(total_NA_genre_sum = 0, total_EU_genre_sum  = 0, total_JP_genre_sum  = 0, total_other_genre_sum = 0)) %>% 
+  mutate(cum_NA_genre_sum = cumsum(total_NA_genre_sum), cum_EU_genre_sum = cumsum(total_EU_genre_sum),cum_JP_genre_sum = cumsum(total_JP_genre_sum),cum__other_genre_sum = cumsum(total_other_genre_sum)) %>%   ggplot(aes(x = cum_genre_sum,
+             y = factor(rank),
+             fill = Genre,
+             group = Genre))+
+  geom_
+```
 
 
 
