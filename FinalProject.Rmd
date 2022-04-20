@@ -82,7 +82,7 @@ vgsales %>%
 ```
 
 ```{r}
-vgsales %>%
+regionsales <- vgsales %>%
   group_by( Year,Genre) %>% 
   summarize(total_NA_genre_sum = sum(NA_Sales), 
             total_EU_genre_sum = sum(EU_Sales), 
@@ -93,11 +93,37 @@ vgsales %>%
   arrange(Genre,Year) %>% 
   group_by(Genre) %>% 
   replace_na(list(total_NA_genre_sum = 0, total_EU_genre_sum  = 0, total_JP_genre_sum  = 0, total_other_genre_sum = 0)) %>% 
-  mutate(cum_NA_genre_sum = cumsum(total_NA_genre_sum), cum_EU_genre_sum = cumsum(total_EU_genre_sum),cum_JP_genre_sum = cumsum(total_JP_genre_sum),cum__other_genre_sum = cumsum(total_other_genre_sum)) %>%   ggplot(aes(x = cum_genre_sum,
+  mutate(cum_NA_genre_sum = cumsum(total_NA_genre_sum), cum_EU_genre_sum = cumsum(total_EU_genre_sum),cum_JP_genre_sum = cumsum(total_JP_genre_sum),cum__other_genre_sum = cumsum(total_other_genre_sum))  
+
+
+p1 <- ggplot(regionsales)+
+  geom_col(aes(x = cum_NA_genre_sum,
              y = factor(rank),
              fill = Genre,
-             group = Genre))+
-  geom_
+             group = Genre))
+
+p2 <- ggplot(regionsales)+
+  geom_col( aes(x = cum_EU_genre_sum,
+             y = factor(rank),
+             fill = Genre,
+             group = Genre))
+
+p3 <- ggplot(regionsales)+
+  geom_col(aes(x = cum_JP_genre_sum,
+             y = factor(rank),
+             fill = Genre,
+             group = Genre))
+
+p4 <- ggplot(regionsales )+
+  geom_col(aes(x = cum_other_genre_sum,
+             y = factor(rank),
+             fill = Genre,
+             group = Genre))
+
+
+p5 <- p1+p2+p3+p4
+
+p5
 ```
 
 
