@@ -1,6 +1,6 @@
 ---
-title: "Final Project Graph"
-author: "Brian Anderson"
+title: "Final Project Graphs"
+author: "Brian Anderson and Daniel Beidelshcies"
 output: 
   html_document:
     df_print: paged
@@ -9,7 +9,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-#knitr::opts_chunk$set(echo = TRUE, error=TRUE, message=FALSE, warning=FALSE)
+knitr::opts_chunk$set(echo = TRUE, error=TRUE, message=FALSE, warning=FALSE)
 ```
 
 ```{r libraries}
@@ -24,30 +24,52 @@ library(readr)
 theme_set(theme_minimal()) # My favorite ggplot() theme :)
 ```
 
-## Data choice 1: Video Game Sales
+## Data choice: Video Game Sales
 
 ```{r}
-vgsales <- read.csv("vgsales.csv")
-view(vgsales)
+vgsales <- read_csv("vgsales.csv", col_types = cols(Year = col_integer()))
+vgsales
 ```
 
-### Tidy Tuesday Graph
+### Final Project Outline
 
-Title: In the YAML section of the document. A descriptive title & list of all group members.
- 
+#### Title: 
+
+In the YAML section of the document. A descriptive title & list of all group members.
+
+*Exploring the World of Video Games*
 Daniel Beidelshcies and Brian Anderson
-Introduction and background: An introduction that motivates & outlines a clear, specific set of research questions. Also, provide some background on your topic.
-Introduction
-Since the advancement of technology, the creation of video games has played an influential role in being a source of entertainment for everyone around the world. Everyone is able to find a game that they like in order to pass time and fulfill their creative needs. 
-Background information
-We have always been interested in video games and wondered how the sales of these games differed across the world as we grew up in different regions.
-Research Questions
+
+#### Introduction and background: 
+
+An introduction that motivates & outlines a clear, specific set of research questions. Also, provide some background on your topic.
+
+##### Introduction
+
+Since the advancement of technology, the creation of video games has played an influential role in being a source of entertainment for everyone around the world. From the multitude of video games that have been created, everyone is able to find a game that they enjoy in order to pass time, have fun, and fulfill their creative needs. With this idea, we wanted to look at how well different games, genres, and platforms did when it came to releasing games for everyone to play. Based on the sales around of the world, we will be able to understand how popularity ranks up between different types of games. 
+
+##### Background information
+
+Since our individual discovery, we have always had interest in video games and wondered how the sales of these games differed across the world as we grew up in different regions. 
+
+#### Research Questions
+
 What are the most selling platforms of games over the years across different regions?
+
 What is the most selling genre of games over the years across different regions?
+
 Who is the most selling publisher of games over the years across different regions?
-Data collection: Specification of your data sources and collection process.
+
+#### Data collection: 
+
+Specification of your data sources and collection process.
+
 Scraping from Kaggle and importing to a dataset
-Analysis: This is the bulk of the report which either has a presentation of the group’s key findings and take-aways or gives the detail of how someone would interact and what people should take away from the shiny app. If you choose to do a shiny app, be sure to include a link to the shinyapps.io site.
+
+#### Analysis: 
+
+This is the bulk of the report which either has a presentation of the group’s key findings and take-aways or gives the detail of how someone would interact and what people should take away from the shiny app. If you choose to do a shiny app, be sure to include a link to the shinyapps.io site.
+
 
 ```{r, fig.alt = Animated BAr Chart showin cumulative video game sales by genre from 1980-2020}
 vgsales %>%
@@ -127,6 +149,8 @@ p5
 
 
 ```
+
+
 ```{r}
 regionplatformsales <- vgsales %>%
   group_by( Year,Platform) %>% 
@@ -172,6 +196,7 @@ p5 <- p1+p2+p3+p4
 p5
 
 ```
+
 
 ```{r}
 regionpublishersales <- vgsales %>%
