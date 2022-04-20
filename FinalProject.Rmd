@@ -38,9 +38,10 @@ vgsales
 In the YAML section of the document. A descriptive title & list of all group members.
 
 *Exploring the World of Video Games*
+
 Daniel Beidelshcies and Brian Anderson
 
-#### Introduction and background: 
+#### Introduction and Background: 
 
 An introduction that motivates & outlines a clear, specific set of research questions. Also, provide some background on your topic.
 
@@ -71,7 +72,7 @@ Scraping from Kaggle and importing to a dataset
 This is the bulk of the report which either has a presentation of the group’s key findings and take-aways or gives the detail of how someone would interact and what people should take away from the shiny app. If you choose to do a shiny app, be sure to include a link to the shinyapps.io site.
 
 
-```{r, fig.alt = Animated BAr Chart showin cumulative video game sales by genre from 1980-2020}
+```{r, fig.alt = "Animated BAr Chart showin cumulative video game sales by genre from 1980-2020."}
 vgsales %>%
   group_by( Year,Genre) %>% 
   summarize(total_genre_sum = sum(Global_Sales)) %>% 
