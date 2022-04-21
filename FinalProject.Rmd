@@ -27,7 +27,7 @@ theme_set(theme_minimal()) # My favorite ggplot() theme :)
 ## Data choice: Video Game Sales
 
 ```{r}
-vgsales <- read_csv("vgsales.csv", col_types = cols(Year = col_integer()))
+vgsales <- read_csv("vgsales.csv", col_types = cols(Year = col_number()))
 vgsales
 ```
 
@@ -86,23 +86,22 @@ vgsales %>%
   mutate(cum_genre_sum = cumsum(total_genre_sum)) %>%
   filter(cum_genre_sum > 0) %>% 
   filter(n()>=13) %>% 
-  top_n(n = 12,wt = cum_genre_sum) %>% 
-  arrange(Year,desc(cum_genre_sum)) %>% 
+  arrange(Year,desc(cum_genre_sum)) %>%
+  drop_na() %>% 
   mutate(rank = 1:n()) %>% 
   ggplot(aes(x = cum_genre_sum,
              y = factor(rank),
-             fill = Genre,
-             group = Genre)) +
+             fill = Genre)) +
   geom_col() +
   geom_text(aes(label = Genre),
             color = "white",
             hjust = "right") +
   labs(title = "Popular Video Game Genres based on Worldwide Sales",
-       subtitle = "Year: {frame_time}",
+       subtitle = "Year: {frame_along}",
        x = "", 
        y = "",
        caption = "Plot created by Brian Anderson, Data from Vgsales") + 
-  transition_time(Year)
+  transition_reveal(Year)
 
 ```
 
@@ -275,12 +274,9 @@ Individual Games: Looking at what games were the most popular and had the most s
 
 ```{r}
 vgsales %>% 
-  filter(Global_Sales > 28) %>% 
-  ggplot(aes(x = Global_Sales,
-             y = Name)) +
-  geom_col() +
-  labs(title = "Top Most Popular Games from 1980-2020",
-       x = "Global Sales (Millions)",
-       y = "")
+  group_by(Name) %>% 
+  summarize(total_gs = sum(Global_Sales)) %>% 
+  filter(total_gs>20) %>% 
+  arrange(desc(total_gs))
 ```
 
