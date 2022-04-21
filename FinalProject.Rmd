@@ -47,13 +47,15 @@ An introduction that motivates & outlines a clear, specific set of research ques
 
 ##### Introduction
 
-Since the advancement of technology, the creation of video games has played an influential role in being a source of entertainment for everyone around the world. From the multitude of video games that have been created, everyone is able to find a game that they enjoy in order to pass time, have fun, and fulfill their creative needs. With this idea, we wanted to look at how well different games, genres, and platforms did when it came to releasing games for everyone to play. Based on the sales around of the world, we will be able to understand how popularity ranks up between different types of games. 
+Since the advancement of technology, the creation of video games has played an influential role in being a source of entertainment for everyone around the world. From the multitude of video games that have been created, everyone is able to find something that they enjoy in order to pass time, have fun, and fulfill their creative needs. With this idea, we want to look at how well different games, genres, and platforms did when it came to releasing games for everyone to play. This will allow us to understand how popularity ranks up between different types of games based on the sales around of the world. 
 
 ##### Background information
 
 Since our individual discovery, we have always had interest in video games and wondered how the sales of these games differed across the world as we grew up in different regions. 
 
 #### Research Questions
+
+What are the most popular games over the years?
 
 What are the most selling platforms of games over the years across different regions?
 
@@ -72,7 +74,7 @@ Scraping from Kaggle and importing to a dataset
 This is the bulk of the report which either has a presentation of the group’s key findings and take-aways or gives the detail of how someone would interact and what people should take away from the shiny app. If you choose to do a shiny app, be sure to include a link to the shinyapps.io site.
 
 
-```{r, fig.alt = "Animated BAr Chart showin cumulative video game sales by genre from 1980-2020."}
+```{r, fig.alt = "Animated BAr Chart showin cumulative video game sales by genre from 1980-2020.", echo=FALSE}
 vgsales %>%
   group_by( Year,Genre) %>% 
   summarize(total_genre_sum = sum(Global_Sales)) %>% 
@@ -104,6 +106,8 @@ vgsales %>%
 
 ```
 
+Genre: Looking at the total sales in North America, Europe, Japan, and other Global regions by Genre
+
 ```{r}
 regiongenresales <- vgsales %>%
   group_by( Year,Genre) %>% 
@@ -116,7 +120,8 @@ regiongenresales <- vgsales %>%
   arrange(Genre,Year) %>% 
   group_by(Genre) %>% 
   replace_na(list(total_NA_genre_sum = 0, total_EU_genre_sum  = 0, total_JP_genre_sum  = 0, total_other_genre_sum = 0)) %>% 
-  mutate(cum_NA_genre_sum = cumsum(total_NA_genre_sum), cum_EU_genre_sum = cumsum(total_EU_genre_sum),cum_JP_genre_sum = cumsum(total_JP_genre_sum),cum_other_genre_sum = cumsum(total_other_genre_sum))  
+  mutate(cum_NA_genre_sum = cumsum(total_NA_genre_sum), cum_EU_genre_sum = cumsum(total_EU_genre_sum),cum_JP_genre_sum = cumsum(total_JP_genre_sum),cum_other_genre_sum = cumsum(total_other_genre_sum)) %>% 
+  filter(cum_NA_genre_sum > 0)
 
 
 g1 <- ggplot(regiongenresales)+
@@ -159,6 +164,7 @@ g4
 
 ```
 
+Platform: Looking at the total sales in North America, Europe, Japan, and other Global regions by platform
 
 ```{r}
 regionplatformsales <- vgsales %>%
@@ -172,7 +178,7 @@ regionplatformsales <- vgsales %>%
   arrange(Platform,Year) %>% 
   group_by(Platform) %>% 
   replace_na(list(total_NA_platform_sum = 0, total_EU_platform_sum  = 0, total_JP_platform_sum  = 0, total_other_platform_sum = 0)) %>% 
-  mutate(cum_NA_platform_sum = cumsum(total_NA_platform_sum), cum_EU_platform_sum = cumsum(total_EU_platform_sum),cum_JP_platform_sum = cumsum(total_JP_platform_sum),cum_other_platform_sum = cumsum(total_other_platform_sum))  
+  mutate(cum_NA_platform_sum = cumsum(total_NA_platform_sum), cum_EU_platform_sum = cumsum(total_EU_platform_sum),cum_JP_platform_sum = cumsum(total_JP_platform_sum),cum_other_platform_sum = cumsum(total_other_platform_sum))
 
 
 p1 <- ggplot(regionplatformsales)+
@@ -263,10 +269,18 @@ pu4 <- ggplot(regionpublishersales)+
   labs(x="", y= "", title ="Other Region Sales by Publisher")+
   theme(legend.position = "none")
 
-
-
-
-
 ```
 
+Individual Games: Looking at what games were the most popular and had the most sales over time
+
+```{r}
+vgsales %>% 
+  filter(Global_Sales > 28) %>% 
+  ggplot(aes(x = Global_Sales,
+             y = Name)) +
+  geom_col() +
+  labs(title = "Top Most Popular Games from 1980-2020",
+       x = "Global Sales (Millions)",
+       y = "")
+```
 
