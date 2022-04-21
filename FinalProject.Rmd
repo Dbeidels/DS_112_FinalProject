@@ -39,7 +39,7 @@ In the YAML section of the document. A descriptive title & list of all group mem
 
 *Exploring the World of Video Games*
 
-Daniel Beidelshcies and Brian Anderson
+Daniel Beidelschies and Brian Anderson
 
 #### Introduction and Background: 
 
@@ -119,35 +119,43 @@ regiongenresales <- vgsales %>%
   mutate(cum_NA_genre_sum = cumsum(total_NA_genre_sum), cum_EU_genre_sum = cumsum(total_EU_genre_sum),cum_JP_genre_sum = cumsum(total_JP_genre_sum),cum_other_genre_sum = cumsum(total_other_genre_sum))  
 
 
-p1 <- ggplot(regiongenresales)+
+g1 <- ggplot(regiongenresales)+
   geom_col(aes(x = cum_NA_genre_sum,
              y = Genre,
              fill = Genre,
-             group = Genre))
+             group = Genre))+
+  labs(x="", y= "", title ="North American Sales by Genre")+
+  theme(legend.position = "none")
 
-p2 <- ggplot(regiongenresales)+
+g2 <- ggplot(regiongenresales)+
   geom_col( aes(x = cum_EU_genre_sum,
              y = Genre,
              fill = Genre,
-             group = Genre))
+             group = Genre))+
+  labs(x="", y= "", title ="European Sales by Genre")+
+  theme(legend.position = "none")
 
-p3 <- ggplot(regiongenresales)+
+g3 <- ggplot(regiongenresales)+
   geom_col(aes(x = cum_JP_genre_sum,
              y = Genre,
              fill = Genre,
-             group = Genre))
+             group = Genre))+
+  labs(x="", y= "", title ="Japanese Sales by Genre")+
+  theme(legend.position = "none")
 
-p4 <- ggplot(regiongenresales )+
+g4 <- ggplot(regiongenresales)+
   geom_col(aes(x = cum_other_genre_sum,
              y = Genre,
              fill = Genre,
-             group = Genre))
+             group = Genre))+
+  labs(x="", y= "", title ="Other Region Sales by Genre")+
+  theme(legend.position = "none")
 
 
-p5 <- p1+p2+p3+p4
-
-p5
-
+g1
+g2
+g3
+g4
 
 ```
 
@@ -171,35 +179,44 @@ p1 <- ggplot(regionplatformsales)+
   geom_col(aes(x = cum_NA_platform_sum,
              y = Platform,
              fill = Platform,
-             group = Platform))
+             group = Platform))+
+  labs(x="", y= "", title ="North American Sales by Platform")+
+  theme(legend.position = "none")
 
 p2 <- ggplot(regionplatformsales)+
   geom_col( aes(x = cum_EU_platform_sum,
              y = Platform,
              fill = Platform,
-             group = Platform))
+             group = Platform))+
+  labs(x="", y= "", title ="European Sales by Platform")+
+  theme(legend.position = "none")
 
 p3 <- ggplot(regionplatformsales)+
   geom_col(aes(x = cum_JP_platform_sum,
              y = Platform,
              fill = Platform,
-             group = Platform))
+             group = Platform))+
+  labs(x="", y= "", title ="Japanese Sales by Platform")+
+  theme(legend.position = "none")
 
 p4 <- ggplot(regionplatformsales )+
   geom_col(aes(x = cum_other_platform_sum,
              y = Platform,
              fill = Platform,
-             group = Platform))
+             group = Platform))+
+  labs(x="", y= "", title ="Other Region Sales by Platform")+
+  theme(legend.position = "none")
 
 
-p5 <- p1+p2+p3+p4
-
-p5
+p1
+p2
+p3
+p4
 
 ```
 
 
-```{r}
+```{r, echo=FALSE}
 regionpublishersales <- vgsales %>%
   group_by( Year,Publisher) %>% 
   summarize(total_NA_publisher_sum = sum(NA_Sales), 
@@ -214,34 +231,42 @@ regionpublishersales <- vgsales %>%
   mutate(cum_NA_publisher_sum = cumsum(total_NA_publisher_sum), cum_EU_publisher_sum = cumsum(total_EU_publisher_sum),cum_JP_publisher_sum = cumsum(total_JP_publisher_sum),cum_other_publisher_sum = cumsum(total_other_publisher_sum))  
 
 
-p1 <- ggplot(regionpublishersales)+
+pu1 <- ggplot(regionpublishersales)+
   geom_col(aes(x = cum_NA_publisher_sum,
              y = Publisher,
              fill = Publisher,
-             group = Publisher))
+             group = Publisher))+
+  labs(x="", y= "", title ="North American Sales by Publisher")+
+  theme(legend.position = "none")
 
-p2 <- ggplot(regionpublishersales)+
+pu2 <- ggplot(regionpublishersales)+
   geom_col( aes(x = cum_EU_publisher_sum,
              y = Publisher,
              fill = Publisher,
-             group = Publisher))
+             group = Publisher))+
+  labs(x="", y= "", title ="European Sales by Publisher")+
+  theme(legend.position = "none")
 
-p3 <- ggplot(regionpublishersales)+
+pu3 <- ggplot(regionpublishersales)+
   geom_col(aes(x = cum_JP_publisher_sum,
              y = Publisher,
              fill = Publisher,
-             group = Publisher))
+             group = Publisher))+
+  labs(x="", y= "", title ="Japanese Sales by Publisher")+
+  theme(legend.position = "none")
 
-p4 <- ggplot(regionpublishersales)+
+pu4 <- ggplot(regionpublishersales)+
   geom_col(aes(x = cum_other_publisher_sum,
              y = Publisher,
              fill = Publisher,
-             group = Publisher))
+             group = Publisher))+
+  labs(x="", y= "", title ="Other Region Sales by Publisher")+
+  theme(legend.position = "none")
 
 
-p5 <- p1+p2+p3+p4
 
-p5
+
+
 ```
 
 
