@@ -74,7 +74,7 @@ Scraping from Kaggle and importing to a dataset
 This is the bulk of the report which either has a presentation of the group’s key findings and take-aways or gives the detail of how someone would interact and what people should take away from the shiny app. If you choose to do a shiny app, be sure to include a link to the shinyapps.io site.
 
 
-```{r, fig.alt = "Animated BAr Chart showin cumulative video game sales by genre from 1980-2020.", echo=FALSE}
+```{r, fig.alt = "Animated Bar Chart showin cumulative video game sales by genre from 1980-2020.", echo=FALSE}
 vgsales %>%
   group_by( Year,Genre) %>% 
   summarize(total_genre_sum = sum(Global_Sales)) %>% 
@@ -89,13 +89,13 @@ vgsales %>%
   arrange(Year,desc(cum_genre_sum)) %>%
   drop_na() %>% 
   mutate(rank = 1:n()) %>% 
-  ggplot(aes(x = cum_genre_sum,
-             y = factor(rank),
-             fill = Genre)) +
-  geom_col() +
-  geom_text(aes(label = Genre),
-            color = "white",
-            hjust = "right") +
+  ggplot(aes(x = Year,
+             y =cum_genre_sum,
+             color = Genre)) +
+  geom_line() +
+  #geom_text(aes(label = Genre),
+   #         color = "white",
+    #        hjust = "right") +
   labs(title = "Popular Video Game Genres based on Worldwide Sales",
        subtitle = "Year: {frame_along}",
        x = "", 
@@ -275,7 +275,7 @@ Individual Games: Looking at what games were the most popular and had the most s
 ```{r}
 vgsales %>% 
   group_by(Name) %>% 
-  summarize(total_gs = sum(Global_Sales)) %>% 
+  summarize(total_gs = sum(Global_Sales), Genre) %>% 
   filter(total_gs>20) %>% 
   arrange(desc(total_gs))
 ```
