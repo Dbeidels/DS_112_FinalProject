@@ -108,49 +108,46 @@ Genre: Looking at the total sales in North America, Europe, Japan, and other Glo
 
 ```{r}
 regiongenresales <- vgsales %>%
-  group_by( Year,Genre) %>% 
+  group_by( Genre) %>% 
   summarize(total_NA_genre_sum = sum(NA_Sales), 
             total_EU_genre_sum = sum(EU_Sales), 
             total_JP_genre_sum = sum(JP_Sales),
             total_other_genre_sum = sum(Other_Sales)) %>% 
   ungroup() %>% 
-  complete(Year,Genre) %>% 
-  arrange(Genre,Year) %>% 
+  complete(Genre) %>% 
+  arrange(Genre) %>% 
   group_by(Genre) %>% 
   replace_na(list(total_NA_genre_sum = 0, total_EU_genre_sum  = 0, total_JP_genre_sum  = 0, total_other_genre_sum = 0)) %>% 
-  mutate(cum_NA_genre_sum = cumsum(total_NA_genre_sum), cum_EU_genre_sum = cumsum(total_EU_genre_sum),cum_JP_genre_sum = cumsum(total_JP_genre_sum),cum_other_genre_sum = cumsum(total_other_genre_sum)) %>% 
-  drop_na() %>% 
-  filter(cum_NA_genre_sum > 0) %>% 
-  select(Genre,Year,cum_other_genre_sum,cum_JP_genre_sum,cum_EU_genre_sum,cum_NA_genre_sum)
-  
+  filter(total_NA_genre_sum > 0)
 
 
 g1 <- ggplot(regiongenresales)+
-  geom_col(aes(x = cum_NA_genre_sum,
-             y = fct_reorder(Genre,cum_NA_genre_sum),
-             fill = Genre))+
+  geom_col(aes(x = total_NA_genre_sum,
+             y = fct_reorder(Genre, total_NA_genre_sum),
+             fill = Genre,
+             group = Genre))+
   labs(x="", y= "", title ="North American Sales by Genre")+
   theme(legend.position = "none")
 
 g2 <- ggplot(regiongenresales)+
-  geom_col( aes(x = cum_EU_genre_sum,
-             y = fct_reorder(Genre,cum_EU_genre_sum),
+  geom_col( aes(x = total_EU_genre_sum,
+             y = fct_reorder(Genre, total_EU_genre_sum),
              fill = Genre,
              group = Genre))+
   labs(x="", y= "", title ="European Sales by Genre")+
   theme(legend.position = "none")
 
 g3 <- ggplot(regiongenresales)+
-  geom_col(aes(x = cum_JP_genre_sum,
-             y = fct_reorder(Genre,cum_JP_genre_sum),
+  geom_col(aes(x = total_JP_genre_sum,
+             y = fct_reorder(Genre, total_JP_genre_sum),
              fill = Genre,
              group = Genre))+
   labs(x="", y= "", title ="Japanese Sales by Genre")+
   theme(legend.position = "none")
 
 g4 <- ggplot(regiongenresales)+
-  geom_col(aes(x = cum_other_genre_sum,
-             y = fct_reorder(Genre,cum_other_genre_sum),
+  geom_col(aes(x = total_other_genre_sum,
+             y = fct_reorder(Genre, total_other_genre_sum),
              fill = Genre,
              group = Genre))+
   labs(x="", y= "", title ="Other Region Sales by Genre")+
