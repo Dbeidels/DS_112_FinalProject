@@ -91,16 +91,15 @@ vgsales %>%
   mutate(rank = 1:n()) %>% 
   ggplot(aes(x = Year,
              y =cum_genre_sum,
-             color = Genre)) +
+             color = Genre,
+             size =.5)) +
   geom_line() +
-  #geom_text(aes(label = Genre),
-   #         color = "white",
-    #        hjust = "right") +
   labs(title = "Popular Video Game Genres based on Worldwide Sales",
        subtitle = "Year: {frame_along}",
        x = "", 
        y = "",
-       caption = "Plot created by Brian Anderson, Data from Vgsales") + 
+       caption = "Plot created by Brian Anderson, Data from Vgsales") +
+  scale_color_manual(values = c("red", "green", "blue", "black", "yellow", "deeppink", "cyan","darkmagenta","steelblue","midnightblue","sienna", "green4"))+
   transition_reveal(Year)
 
 ```
@@ -120,20 +119,22 @@ regiongenresales <- vgsales %>%
   group_by(Genre) %>% 
   replace_na(list(total_NA_genre_sum = 0, total_EU_genre_sum  = 0, total_JP_genre_sum  = 0, total_other_genre_sum = 0)) %>% 
   mutate(cum_NA_genre_sum = cumsum(total_NA_genre_sum), cum_EU_genre_sum = cumsum(total_EU_genre_sum),cum_JP_genre_sum = cumsum(total_JP_genre_sum),cum_other_genre_sum = cumsum(total_other_genre_sum)) %>% 
-  filter(cum_NA_genre_sum > 0)
+  drop_na() %>% 
+  filter(cum_NA_genre_sum > 0) %>% 
+  select(Genre,Year,cum_other_genre_sum,cum_JP_genre_sum,cum_EU_genre_sum,cum_NA_genre_sum)
+  
 
 
 g1 <- ggplot(regiongenresales)+
   geom_col(aes(x = cum_NA_genre_sum,
-             y = Genre,
-             fill = Genre,
-             group = Genre))+
+             y = fct_reorder(Genre,cum_NA_genre_sum),
+             fill = Genre))+
   labs(x="", y= "", title ="North American Sales by Genre")+
   theme(legend.position = "none")
 
 g2 <- ggplot(regiongenresales)+
   geom_col( aes(x = cum_EU_genre_sum,
-             y = Genre,
+             y = fct_reorder(Genre,cum_EU_genre_sum),
              fill = Genre,
              group = Genre))+
   labs(x="", y= "", title ="European Sales by Genre")+
@@ -141,7 +142,7 @@ g2 <- ggplot(regiongenresales)+
 
 g3 <- ggplot(regiongenresales)+
   geom_col(aes(x = cum_JP_genre_sum,
-             y = Genre,
+             y = fct_reorder(Genre,cum_JP_genre_sum),
              fill = Genre,
              group = Genre))+
   labs(x="", y= "", title ="Japanese Sales by Genre")+
@@ -149,7 +150,7 @@ g3 <- ggplot(regiongenresales)+
 
 g4 <- ggplot(regiongenresales)+
   geom_col(aes(x = cum_other_genre_sum,
-             y = Genre,
+             y = fct_reorder(Genre,cum_other_genre_sum),
              fill = Genre,
              group = Genre))+
   labs(x="", y= "", title ="Other Region Sales by Genre")+
@@ -274,8 +275,8 @@ Individual Games: Looking at what games were the most popular and had the most s
 
 ```{r}
 vgsales %>% 
-  group_by(Name) %>% 
-  summarize(total_gs = sum(Global_Sales), Genre) %>% 
+  group_by(Name,Genre) %>% 
+  summarize(total_gs = sum(Global_Sales)) %>% 
   filter(total_gs>20) %>% 
   arrange(desc(total_gs))
 ```
