@@ -91,9 +91,8 @@ vgsales %>%
   mutate(rank = 1:n()) %>% 
   ggplot(aes(x = Year,
              y =cum_genre_sum,
-             color = Genre,
-             size =.5)) +
-  geom_line() +
+             color = Genre)) +
+  geom_line(size =1.5) +
   labs(title = "Popular Video Game Genres based on Worldwide Sales",
        subtitle = "Year: {frame_along}",
        x = "", 
@@ -124,34 +123,34 @@ regiongenresales <- vgsales %>%
 g1 <- ggplot(regiongenresales)+
   geom_col(aes(x = total_NA_genre_sum,
              y = fct_reorder(Genre, total_NA_genre_sum),
-             fill = Genre,
-             group = Genre))+
+             fill = factor(Genre)))+
   labs(x="", y= "", title ="North American Sales by Genre")+
-  theme(legend.position = "none")
+  theme(legend.position = "none")+
+  scale_fill_manual(values=c("Action" = "red", "Role-Playing"= "blue"))
 
 g2 <- ggplot(regiongenresales)+
   geom_col( aes(x = total_EU_genre_sum,
              y = fct_reorder(Genre, total_EU_genre_sum),
-             fill = Genre,
-             group = Genre))+
+             fill = factor(Genre)))+
   labs(x="", y= "", title ="European Sales by Genre")+
-  theme(legend.position = "none")
+  theme(legend.position = "none")+
+  scale_fill_manual(values=c("Action" = "red", "Role-Playing"= "blue"))
 
 g3 <- ggplot(regiongenresales)+
   geom_col(aes(x = total_JP_genre_sum,
              y = fct_reorder(Genre, total_JP_genre_sum),
-             fill = Genre,
-             group = Genre))+
+             fill = factor(Genre)))+
   labs(x="", y= "", title ="Japanese Sales by Genre")+
-  theme(legend.position = "none")
+  theme(legend.position = "none")+
+  scale_fill_manual(values=c("Action" = "red", "Role-Playing"= "blue"))
 
 g4 <- ggplot(regiongenresales)+
   geom_col(aes(x = total_other_genre_sum,
              y = fct_reorder(Genre, total_other_genre_sum),
-             fill = Genre,
-             group = Genre))+
+             fill = factor(Genre)))+
   labs(x="", y= "", title ="Other Region Sales by Genre")+
-  theme(legend.position = "none")
+  theme(legend.position = "none")+
+  scale_fill_manual(values=c("Action" = "red", "Role-Playing"= "blue"))
 
 
 g1
