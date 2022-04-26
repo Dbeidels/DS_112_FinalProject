@@ -183,6 +183,13 @@ g4
 
 Platform: Looking at the total sales in North America, Europe, Japan, and other Global regions by platform
 
+```{r}
+vgsales %>% 
+  group_by(Genre, Platform) %>% 
+  summarise(tvs = sum(Global_Sales)) %>% 
+  arrange(Genre,desc(tvs))
+```
+
 ```{r, fig.height=10}
 regionplatformsales <- vgsales %>%
   group_by(Platform) %>% 
