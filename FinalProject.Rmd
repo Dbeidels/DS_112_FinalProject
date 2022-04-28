@@ -270,17 +270,29 @@ p5
 
 Individual Games: Looking at what games were the most popular and had the most sales over time
 
-```{r}
+```{r, fig.height = 6.5, fig.width = 10}
 vgsales %>% 
   group_by(Name,Genre) %>% 
   summarize(total_gs = sum(Global_Sales)) %>% 
   filter(total_gs>20) %>% 
   arrange(desc(total_gs)) %>% 
   ggplot(aes(x = total_gs,
-             y = Name)) +
+             y = fct_reorder(Name, total_gs),
+             fill = Genre)) +
   geom_col() +
+  scale_fill_manual(values = c("red","black", "yellow", "deeppink", "cyan",
+                              "darkmagenta","steelblue","midnightblue","gold")) +
   labs(x = "", 
        y = "", 
        title = "Most Popular Games by Global Sales") 
 ```
 
+Action: 3 games
+Misc: 4 games
+Platform: 6 games
+Puzzle: 1 game
+Racing: 2 games
+Role-playing: 2 games 
+Shooter: 7 games
+Simulation: 1 games 
+Sports: 4 games 
