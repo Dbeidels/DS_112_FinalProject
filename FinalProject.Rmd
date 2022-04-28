@@ -268,6 +268,33 @@ p5
 
 ```
 
+Franchises
+
+```{r}
+vgsales %>%
+  mutate(Name = ifelse(Name == "Minecraft: Story Mode", "Minecraft", Name)) %>%
+  mutate(Name = ifelse(Name %in% c("Grand Theft Auto V","Grand Theft Auto: Liberty City Stories","Grand Theft Auto 2","Rockstar Games Double Pack: Grand Theft Auto III & Grand Theft Auto Vice City","Grand Theft Auto: Chinatown Wars","Grand Theft Auto: San Andreas","Grand Theft Auto: Vice City Stories","Grand Theft Auto IV","Grand Theft Auto: San Andreas","Grand Theft Auto: Mission Pack #1, London 1969","Grand Theft Auto: Vice City","Grand Theft Auto III"), "Grand Theft Auto", Name)) %>% 
+  mutate(Name = ifelse(Name %in% c("Tetris", "Tetris Plus", 
+                                   "Tetris DS","Tetris Worlds", 
+                                   "Tetris DX", "Tetris 2 (All region sales)",
+                                   "Tetris 2", "The Next Tetris", 
+                                   "Tetris Party Deluxe", "Tetris Axis",
+                                   "Tetris Online", "Tetrisphere",
+                                   "Tetris 2 + Bombliss", "The New Tetris",
+                                   "Tetris 2 (weekly jp sales)", 
+                                   "Tetris Attack", "Tetris Worlds",
+                                   "Magical Tetris Challenge", 
+                                   "Tetris Worlds (Online Edition)", 
+                                   "Star Wars: The Clone Wars & Tetris Worlds",
+                                   "Tetris Attack", "Puyo Puyo Tetris",
+                                   "Tetris Evolution", "Tetris Ultimate"),
+                       "Tetris",Name)) %>% 
+  group_by(Name) %>% 
+  summarise(tgvs = sum(Global_Sales)) %>% 
+  filter(Name =="Minecraft" | Name == "Grand Theft Auto" | Name == "Tetris")
+```
+
+
 Individual Games: Looking at what games were the most popular and had the most sales over time
 
 ```{r, fig.height = 6.5, fig.width = 10}
