@@ -98,8 +98,7 @@ vgsales %>%
        x = "", 
        y = "",
        caption = "Plot created by D.B. & B.A., Data from Vgsales") +
-  scale_color_manual(values = c("red", "green","blue","black", "yellow", "deeppink", 
-                                "cyan","darkmagenta","steelblue","midnightblue","sienna", "green4"))+
+  scale_color_manual(values = c("red", "green","blue","black", "yellow","deeppink","cyan","darkmagenta","steelblue","midnightblue","sienna", "green4"))+
   transition_reveal(Year)
 ```
 
@@ -186,13 +185,13 @@ Platform: Looking at the total sales in North America, Europe, Japan, and other 
 ```{r}
 vgsales %>% 
   group_by(Genre, Platform) %>% 
-  summarise(tvs = sum(Global_Sales)) %>% 
+  summarise(tvs = sum(Global_Sales),tnavs = sum(NA_Sales)) %>% 
   arrange(Genre,desc(tvs))
 ```
 
-```{r, fig.height=10}
+```{r, fig.height=14, fig.width=12}
 regionplatformsales <- vgsales %>%
-  group_by(Platform) %>% 
+  group_by(Platform, Genre) %>% 
   summarize(total_NA_platform_sum = sum(NA_Sales), 
             total_EU_platform_sum = sum(EU_Sales), 
             total_JP_platform_sum = sum(JP_Sales),
@@ -202,47 +201,64 @@ regionplatformsales <- vgsales %>%
   complete(Platform) %>% 
   arrange(Platform) %>% 
   group_by(Platform) %>% 
-  replace_na(list(total_NA_platform_sum = 0, total_EU_platform_sum  = 0, total_JP_platform_sum  = 0, total_other_platform_sum = 0))
+  replace_na(list(total_NA_platform_sum = 0, total_EU_platform_sum  = 0, total_JP_platform_sum  = 0, total_other_platform_sum = 0)) %>% 
+  mutate(cum_NA_plat_sum = cumsum(total_NA_platform_sum), 
+         cum_EU_plat_sum = cumsum(total_EU_platform_sum),
+         cum_JP_plat_sum = cumsum(total_JP_platform_sum),
+         cum_other_plat_sum = cumsum(total_other_platform_sum),
+         cum_global_plat_sum = cumsum(total_global_platform_sum)) 
   
-p1 <- ggplot(regionplatformsales)+
+p1 <- regionplatformsales %>% 
+  filter(total_NA_platform_sum >0) %>% 
+  ggplot()+
   geom_col(aes(x = total_NA_platform_sum,
-             y = Platform,
-             fill = Platform,
+             y = fct_reorder(Platform,cum_NA_plat_sum),
+             fill = factor(Genre),
              group = Platform))+
-  labs(x="", y= "", title ="North American Sales by Platform")+
-  theme(legend.position = "none")
+  scale_fill_manual(values = c("red", "green","blue","black", "yellowgreen", "deeppink","cyan","darkmagenta","steelblue","midnightblue","gold", "green4"))+
+  labs(x="", y= "", title ="North American Sales by Platform")
 
-p2 <- ggplot(regionplatformsales)+
-  geom_col( aes(x = total_EU_platform_sum,
-             y = Platform,
-             fill = Platform,
+p2 <- regionplatformsales %>% 
+  replace_na(list(cum_global_plat_sum = 0)) %>%
+  filter(cum_global_plat_sum >0) %>% 
+  ggplot()+
+  geom_col(aes(x = total_EU_platform_sum,
+             y = fct_reorder(Platform,cum_EU_plat_sum),
+             fill = factor(Genre),
              group = Platform))+
-  labs(x="", y= "", title ="European Sales by Platform")+
-  theme(legend.position = "none")
+  scale_fill_manual(values = c("red", "green","blue","black", "yellowgreen", "deeppink","cyan","darkmagenta","steelblue","midnightblue","gold", "green4")) +
+  labs(x="", y= "", title ="European Sales by Platform")
 
-p3 <- ggplot(regionplatformsales)+
+p3 <- regionplatformsales %>% 
+  filter(total_JP_platform_sum >0) %>% 
+  ggplot()+
   geom_col(aes(x = total_JP_platform_sum,
-             y = Platform,
-             fill = Platform,
+             y = fct_reorder(Platform,cum_JP_plat_sum),
+             fill = factor(Genre),
              group = Platform))+
-  labs(x="", y= "", title ="Japanese Sales by Platform")+
-  theme(legend.position = "none")
+  scale_fill_manual(values = c("red", "green","blue","black", "yellowgreen", "deeppink","cyan","darkmagenta","steelblue","midnightblue","gold", "green4"))+
+  labs(x="", y= "", title ="Japanese Sales by Platform")
 
-p4 <- ggplot(regionplatformsales )+
+p4 <- regionplatformsales %>% 
+  replace_na(list(cum_global_plat_sum = 0)) %>%
+  filter(cum_global_plat_sum >0) %>% 
+  ggplot()+
   geom_col(aes(x = total_other_platform_sum,
-             y = Platform,
-             fill = Platform,
+             y = fct_reorder(Platform,cum_other_plat_sum),
+             fill = factor(Genre),
              group = Platform))+
-  labs(x="", y= "", title ="Other Region Sales by Platform")+
-  theme(legend.position = "none")
+  scale_fill_manual(values = c("red", "green","blue","black", "yellowgreen", "deeppink","cyan","darkmagenta","steelblue","midnightblue","gold", "green4"))+
+  labs(x="", y= "", title ="Other Region Sales by Platform")
 
-p5 <- ggplot(regionplatformsales )+
+p5 <- regionplatformsales %>% 
+  filter(total_global_platform_sum >0) %>% 
+  ggplot()+
   geom_col(aes(x = total_global_platform_sum,
-             y = Platform,
-             fill = Platform,
+             y = fct_reorder(Platform,cum_global_plat_sum),
+             fill = factor(Genre),
              group = Platform))+
-  labs(x="", y= "", title ="Global Sales by Platform")+
-  theme(legend.position = "none")
+  scale_fill_manual(values = c("red", "green","blue","black", "yellowgreen", "deeppink","cyan","darkmagenta","steelblue","midnightblue","gold", "green4"))+
+  labs(x="", y= "", title ="Global Sales by Platform")
 
 p1
 p2
