@@ -289,9 +289,30 @@ vgsales %>%
                                    "Tetris Attack", "Puyo Puyo Tetris",
                                    "Tetris Evolution", "Tetris Ultimate"),
                        "Tetris",Name)) %>% 
+  mutate(Name = ifelse(Name %in% c("Super Mario Bros.","New Super Mario Bros.",
+                                   "New Super Mario Bros. Wii", 
+                                   "Super Mario Bros. 3", 
+                                   "New Super Mario Bros. 2", 
+                                   "Super Mario Bros. 2","Super Mario Bros. 3",
+                                   "New Super Mario Bros. U",
+                                   "Super Mario Bros.: The Lost Levels",
+                                   "Mario Bros",
+                                   "Classic NES Series: Super Mario Bros.",
+                                   "Puzzle & Dragons Z + Super Mario Bros. Edition",
+                                   "Famicom Mini: Super Mario Bros. 2",
+                                   "Famicom Mini: Mario Bros."),"Mario", Name)) %>%
+  mutate(Name = ifelse(Name %in% c("Pokemon Red/Pokemon Blue",
+                                   "Pokemon Gold/Pokemon Silver",
+                                   "Pokemon Diamond/Pokemon Pearl",
+                                   "Pokemon Ruby/Pokemon Sapphire",
+                                   "Pokemon Black/Pokemon White",
+                                   "Pokemon X/Pokemon Y",
+                                   "Pokemon HeartGold/Pokemon SoulSilver",
+                                   "Pokemon Omega Ruby/Pokemon Alpha Sapphire","Pokemon FireRed/Pokemon LeafGreen","Pokemon Black 2/Pokemon White 2","Pokemon Stadium","Pokemon Pinball","Pokemon Mystery Dungeon: Explorers of Time/Explorers of Darkness","Pokemon Snap","Pokemon Ranger: Shadows of Almia","Pokemon Ranger","Pokemon Mystery Dungeon: Red/Blue Rescue Team","Pokemon Battle Revolution","Pokemon Mystery Dungeon: Explorers of Sky","Pokemon Pinball: Ruby & Sapphire","Pokemon Ranger: Guardian Signs","Pokemon Mystery Dungeon: Gates to Infinity","Pokemon XD: Gale of Darkness","Pokemon Super Mystery Dungeon","Pokemon Rumble Blast","Pokemon Conquest","Pokemon Card GB2: Here Comes Team GR!","Pokemon Dash","Pokemon Trozei!","Pokemon Art Academy","Pokemon Puzzle League", "Pokemon Channel", "Battle & Get! Pokemon Typing DS","Pokemon Box: Ruby & Sapphire","Pokemon Rumble World","Pok?mon Platinum Version","Pok?mon Emerald Version","Pok?mon Crystal Version","Pok?mon Stadium 2","Pok?mon Colosseum","Pok?mon Mystery Dungeon: Blue Rescue Team", "Pok?Park Wii: Pikachu's Adventure","	Pok?mon Mystery Dungeon: Red Rescue Team (US weekly sales)","Pokken Tournament", "PokePark 2: Wonders Beyond","Pok?mon I Choose You / Squirtle Squad Game Boy Advance Video", "Pok?mon Beach Blank-out Blastoise / Go West Young Meowth Game Boy Advance Video", "Pok?mon: Johto Photo Finish: Game Boy Advance Video","Pok?mon: For Ho-Oh the Bells Toll!: Game Boy Advance Video", "Hey You, Pikachu!"), "Pokemon", Name)) %>% 
   group_by(Name) %>% 
   summarise(tgvs = sum(Global_Sales)) %>% 
-  filter(Name =="Minecraft" | Name == "Grand Theft Auto" | Name == "Tetris")
+  filter(Name =="Minecraft" | Name == "Grand Theft Auto" | Name == "Tetris"|
+         Name == "Mario" | Name == "Pokemon")
 ```
 
 
