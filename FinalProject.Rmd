@@ -47,7 +47,7 @@ An introduction that motivates & outlines a clear, specific set of research ques
 
 ##### Introduction
 
-Since the advancement of technology, the creation of video games has played an influential role in being a source of entertainment for everyone around the world. From the multitude of video games that have been created, everyone is able to find something that they enjoy in order to pass time, have fun, and fulfill their creative needs. With this idea, we want to look at how well different games, genres, and platforms did when it came to releasing games for everyone to play. This will allow us to understand how popularity ranks up between different types of games based on the sales around of the world. 
+Since the advancement of technology, the creation of video games has played an influential role in being a source of entertainment for everyone around the world. From the multitude of video games that have been created, everyone is able to find something that they enjoy in order to pass time, have fun, and fulfill their creative needs. With this idea, we wanted to look at how well different games, genres, and platforms did when it came to releasing games for everyone to play. This will allow us to understand how popularity ranks up between different types of games based on the sales around of the world. 
 
 ##### Background information
 
@@ -73,8 +73,9 @@ Scraping from Kaggle and importing to a dataset
 
 This is the bulk of the report which either has a presentation of the group’s key findings and take-aways or gives the detail of how someone would interact and what people should take away from the shiny app. If you choose to do a shiny app, be sure to include a link to the shinyapps.io site.
 
+At first, we looked at which genre of games was the most popular based on global sales. 
 
-```{r, fig.alt = "Animated Bar Chart showin cumulative video game sales by genre from 1980-2020.", echo=FALSE}
+```{r, fig.alt = "Animated Line Graph showing cumulative video game sales by genre from 1980-2020.", echo=FALSE}
 vgsales %>%
   group_by( Year,Genre) %>% 
   summarize(total_genre_sum = sum(Global_Sales)) %>% 
@@ -92,7 +93,7 @@ vgsales %>%
   ggplot(aes(x = Year,
              y = cum_genre_sum,
              color = Genre)) +
-  geom_line(size =1.5) +
+  geom_line(size = 1.5) +
   labs(title = "Popular Video Game Genres based on Worldwide Sales",
        subtitle = "Year: {frame_along}",
        x = "", 
@@ -102,14 +103,15 @@ vgsales %>%
   transition_reveal(Year)
 ```
 
+From this animated graph, we saw that the action genre was the most popular by the end of the time period in 2020. It was followed by 
+
 When did each genre become popular?
 
 action 1995,another spike in 2001, and gradual linear path
 role playing 1995, steady linear path 
 
 
-
-Genre: Looking at the total sales in North America, Europe, Japan, and other Global regions by Genre
+Next, we looked at the total sales of each genre in different locations including North America, Europe, Japan, and other Global regions. 
 
 ```{r}
 regiongenresales <- vgsales %>%
@@ -135,6 +137,7 @@ g1 <- ggplot(regiongenresales) +
                fill = factor(Genre))) +
   labs(x = "", 
        y = "", 
+       caption = "Plot created by D.B. & B.A., Data from Vgsales",
        title = "North American Sales by Genre") +
   theme(legend.position = "none") +
   scale_fill_manual(values = c("Action" = "red", 
@@ -145,7 +148,8 @@ g2 <- ggplot(regiongenresales) +
                y = fct_reorder(Genre, total_EU_genre_sum),
                fill = factor(Genre))) +
   labs(x = "", 
-       y = "", 
+       y = "",
+       caption = "Plot created by D.B. & B.A., Data from Vgsales",
        title ="European Sales by Genre") +
   theme(legend.position = "none") +
   scale_fill_manual(values = c("Action" = "red", 
@@ -156,7 +160,8 @@ g3 <- ggplot(regiongenresales) +
                y = fct_reorder(Genre, total_JP_genre_sum),
                fill = factor(Genre))) +
   labs(x = "", 
-       y = "", 
+       y = "",
+       caption = "Plot created by D.B. & B.A., Data from Vgsales",
        title = "Japanese Sales by Genre") +
   theme(legend.position = "none") +
   scale_fill_manual(values = c("Action" = "red", 
@@ -167,7 +172,8 @@ g4 <- ggplot(regiongenresales) +
                y = fct_reorder(Genre, total_other_genre_sum),
                fill = factor(Genre))) +
   labs(x = "", 
-       y = "", 
+       y = "",
+       caption = "Plot created by D.B. & B.A., Data from Vgsales",
        title = "Other Region Sales by Genre") +
   theme(legend.position = "none") +
   scale_fill_manual(values=c("Action" = "red", 
@@ -179,6 +185,9 @@ g2
 g3
 g4
 ```
+
+From these graphs, we found that Action remained the highest selling genre in North America, Europe, and other regions. Although, it was a different story for Japan as Role-playing was the most popular genre, about two times higher than the second competing genre of Action. With this information, we then wanted to see how 
+
 
 Platform: Looking at the total sales in North America, Europe, Japan, and other Global regions by platform
 
@@ -216,7 +225,10 @@ p1 <- regionplatformsales %>%
              fill = factor(Genre),
              group = Platform))+
   scale_fill_manual(values = c("red", "green","blue","black", "yellowgreen", "deeppink","cyan","darkmagenta","steelblue","midnightblue","gold", "green4"))+
-  labs(x="", y= "", title ="North American Sales by Platform")
+  labs(x = "", 
+       y = "",
+       caption = "Plot created by D.B. & B.A., Data from Vgsales",
+       title = "North American Sales by Platform")
 
 p2 <- regionplatformsales %>% 
   replace_na(list(cum_global_plat_sum = 0)) %>%
@@ -227,7 +239,10 @@ p2 <- regionplatformsales %>%
              fill = factor(Genre),
              group = Platform))+
   scale_fill_manual(values = c("red", "green","blue","black", "yellowgreen", "deeppink","cyan","darkmagenta","steelblue","midnightblue","gold", "green4")) +
-  labs(x="", y= "", title ="European Sales by Platform")
+  labs(x = "", 
+       y = "",
+       caption = "Plot created by D.B. & B.A., Data from Vgsales",
+       title = "European Sales by Platform")
 
 p3 <- regionplatformsales %>% 
   filter(total_JP_platform_sum >0) %>% 
@@ -237,7 +252,10 @@ p3 <- regionplatformsales %>%
              fill = factor(Genre),
              group = Platform))+
   scale_fill_manual(values = c("red", "green","blue","black", "yellowgreen", "deeppink","cyan","darkmagenta","steelblue","midnightblue","gold", "green4"))+
-  labs(x="", y= "", title ="Japanese Sales by Platform")
+  labs(x = "", 
+       y = "",
+       caption = "Plot created by D.B. & B.A., Data from Vgsales",
+       title ="Japanese Sales by Platform")
 
 p4 <- regionplatformsales %>% 
   replace_na(list(cum_global_plat_sum = 0)) %>%
@@ -248,7 +266,10 @@ p4 <- regionplatformsales %>%
              fill = factor(Genre),
              group = Platform))+
   scale_fill_manual(values = c("red", "green","blue","black", "yellowgreen", "deeppink","cyan","darkmagenta","steelblue","midnightblue","gold", "green4"))+
-  labs(x="", y= "", title ="Other Region Sales by Platform")
+  labs(x = "", 
+       y = "",
+       caption = "Plot created by D.B. & B.A., Data from Vgsales",
+       title ="Other Region Sales by Platform")
 
 p5 <- regionplatformsales %>% 
   filter(total_global_platform_sum >0) %>% 
@@ -258,7 +279,10 @@ p5 <- regionplatformsales %>%
              fill = factor(Genre),
              group = Platform))+
   scale_fill_manual(values = c("red", "green","blue","black", "yellowgreen", "deeppink","cyan","darkmagenta","steelblue","midnightblue","gold", "green4"))+
-  labs(x="", y= "", title ="Global Sales by Platform")
+  labs(x = "", 
+       y = "",
+       caption = "Plot created by D.B. & B.A., Data from Vgsales",
+       title ="Global Sales by Platform")
 
 p1
 p2
@@ -268,7 +292,7 @@ p5
 
 ```
 
-Franchises
+Franchises: Looking at the most popular video game franchises based on global sells  
 
 ```{r}
 vgsales %>%
@@ -320,7 +344,8 @@ vgsales %>%
   #scale_fill_manual(values = c("red","black", "yellow", "deeppink", "cyan",
                               #"darkmagenta","steelblue","midnightblue","gold")) +
   labs(x = "", 
-       y = "", 
+       y = "",
+       caption = "Plot created by D.B. & B.A., Data from Vgsales",
        title = "Most Popular Franchises by Global Sales") 
 ```
 
@@ -341,6 +366,7 @@ vgsales %>%
                               "darkmagenta","steelblue","midnightblue","gold")) +
   labs(x = "", 
        y = "", 
+       caption = "Plot created by D.B. & B.A., Data from Vgsales",
        title = "Most Popular Games by Global Sales") 
 ```
 
