@@ -1,6 +1,6 @@
 ---
 title: "Final Project Report"
-author: "Brian Anderson and Daniel Beidelshcies"
+author: "Brian Anderson and Daniel Beidelschies"
 output: 
   html_document:
     df_print: paged
@@ -12,7 +12,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE, error=TRUE, message=FALSE, warning=FALSE)
 ```
 
-```{r libraries}
+```{r libraries, echo = FALSE}
 library(tidyverse)     # for graphing and data cleaning
 library(lubridate)     # for date manipulation
 library(ggthemes)      # for even more plotting theme
@@ -27,8 +27,8 @@ theme_set(theme_minimal()) # My favorite ggplot() theme :)
 
 ## Data choice: Video Game Sales
 
-```{r}
-vgsales <- read_csv("vgsales.csv", col_types = cols(Year = col_number()))
+```{r, echo = FALSE}
+vgsales <- read_csv("vgsales.csv", col_types = cols(Year = col_integer() ))
 vgsales
 ```
 
@@ -177,8 +177,8 @@ g4 <- ggplot(regiongenresales) +
 
 g1
 g2
-g3
 g4
+g3
 ```
 
 
@@ -280,8 +280,8 @@ p5 <- regionplatformsales %>%
 
 p1
 p2
-p3
 p4
+p3
 p5
 
 ```
@@ -294,7 +294,17 @@ It can be understood that these genres have franchises that bring the majority o
 ```{r, fig.alt = "Column chart showing the total global sales of popular video game franchises.", echo = FALSE}
 vgsales %>%
   mutate(Name = ifelse(Name == "Minecraft: Story Mode", "Minecraft", Name)) %>%
-  mutate(Name = ifelse(Name %in% c("Grand Theft Auto V","Grand Theft Auto: Liberty City Stories","Grand Theft Auto 2","Rockstar Games Double Pack: Grand Theft Auto III & Grand Theft Auto Vice City","Grand Theft Auto: Chinatown Wars","Grand Theft Auto: San Andreas","Grand Theft Auto: Vice City Stories","Grand Theft Auto IV","Grand Theft Auto: San Andreas","Grand Theft Auto: Mission Pack #1, London 1969","Grand Theft Auto: Vice City","Grand Theft Auto III"), "Grand Theft Auto", Name)) %>% 
+  mutate(Name = ifelse(Name %in% c("Grand Theft Auto V",
+                                   "Grand Theft Auto: Liberty City Stories",
+                                   "Grand Theft Auto 2",
+                                   "Rockstar Games Double Pack: Grand Theft Auto III & Grand Theft Auto Vice City",
+                                   "Grand Theft Auto: Chinatown Wars",
+                                   "Grand Theft Auto: San Andreas",
+                                   "Grand Theft Auto: Vice City Stories",
+                                   "Grand Theft Auto IV","Grand Theft Auto: San Andreas",
+                                   "Grand Theft Auto: Mission Pack #1, London 1969",
+                                   "Grand Theft Auto: Vice City",
+                                   "Grand Theft Auto III"), "Grand Theft Auto", Name)) %>% 
   mutate(Name = ifelse(Name %in% c("Tetris", "Tetris Plus", 
                                    "Tetris DS","Tetris Worlds", 
                                    "Tetris DX", "Tetris 2 (All region sales)",
@@ -310,11 +320,13 @@ vgsales %>%
                                    "Tetris Attack", "Puyo Puyo Tetris",
                                    "Tetris Evolution", "Tetris Ultimate"),
                        "Tetris",Name)) %>% 
-  mutate(Name = ifelse(Name %in% c("Super Mario Bros.","New Super Mario Bros.",
+  mutate(Name = ifelse(Name %in% c("Super Mario Bros.",
+                                   "New Super Mario Bros.",
                                    "New Super Mario Bros. Wii", 
                                    "Super Mario Bros. 3", 
                                    "New Super Mario Bros. 2", 
-                                   "Super Mario Bros. 2","Super Mario Bros. 3",
+                                   "Super Mario Bros. 2",
+                                   "Super Mario Bros. 3",
                                    "New Super Mario Bros. U",
                                    "Super Mario Bros.: The Lost Levels",
                                    "Mario Bros",
@@ -322,7 +334,55 @@ vgsales %>%
                                    "Puzzle & Dragons Z + Super Mario Bros. Edition",
                                    "Famicom Mini: Super Mario Bros. 2",
                                    "Famicom Mini: Mario Bros."),"Mario", Name)) %>%
-  mutate(Name = ifelse(Name %in% c("Pokemon Red/Pokemon Blue","Pokemon Gold/Pokemon Silver","Pokemon Diamond/Pokemon Pearl","Pokemon Ruby/Pokemon Sapphire","Pokemon Black/Pokemon White","Pokemon X/Pokemon Y","Pokemon HeartGold/Pokemon SoulSilver","Pokemon Omega Ruby/Pokemon Alpha Sapphire","Pokemon FireRed/Pokemon LeafGreen","Pokemon Black 2/Pokemon White 2","Pokemon Stadium","Pokemon Pinball","Pokemon Mystery Dungeon: Explorers of Time/Explorers of Darkness","Pokemon Snap","Pokemon Ranger: Shadows of Almia","Pokemon Ranger","Pokemon Mystery Dungeon: Red/Blue Rescue Team","Pokemon Battle Revolution","Pokemon Mystery Dungeon: Explorers of Sky","Pokemon Pinball: Ruby & Sapphire","Pokemon Ranger: Guardian Signs","Pokemon Mystery Dungeon: Gates to Infinity","Pokemon XD: Gale of Darkness","Pokemon Super Mystery Dungeon","Pokemon Rumble Blast","Pokemon Conquest","Pokemon Card GB2: Here Comes Team GR!","Pokemon Dash","Pokemon Trozei!","Pokemon Art Academy","Pokemon Puzzle League", "Pokemon Channel", "Battle & Get! Pokemon Typing DS","Pokemon Box: Ruby & Sapphire","Pokemon Rumble World","Pok?mon Platinum Version","Pok?mon Emerald Version","Pok?mon Crystal Version","Pok?mon Stadium 2","Pok?mon Colosseum","Pok?mon Mystery Dungeon: Blue Rescue Team", "Pok?Park Wii: Pikachu's Adventure","	Pok?mon Mystery Dungeon: Red Rescue Team (US weekly sales)","Pokken Tournament", "PokePark 2: Wonders Beyond","Pok?mon I Choose You / Squirtle Squad Game Boy Advance Video", "Pok?mon Beach Blank-out Blastoise / Go West Young Meowth Game Boy Advance Video", "Pok?mon: Johto Photo Finish: Game Boy Advance Video","Pok?mon: For Ho-Oh the Bells Toll!: Game Boy Advance Video", "Hey You, Pikachu!"), "Pokemon", Name)) %>% 
+  mutate(Name = ifelse(Name %in% c("Pokemon Red/Pokemon Blue",
+                                   "Pokemon Gold/Pokemon Silver",
+                                   "Pokemon Diamond/Pokemon Pearl",
+                                   "Pokemon Ruby/Pokemon Sapphire",
+                                   "Pokemon Black/Pokemon White",
+                                   "Pokemon X/Pokemon Y",
+                                   "Pokemon HeartGold/Pokemon SoulSilver",
+                                   "Pokemon Omega Ruby/Pokemon Alpha Sapphire",
+                                   "Pokemon FireRed/Pokemon LeafGreen",
+                                   "Pokemon Black 2/Pokemon White 2",
+                                   "Pokemon Stadium",
+                                   "Pokemon Pinball",
+                                   "Pokemon Mystery Dungeon: Explorers of Time/Explorers of Darkness",
+                                   "Pokemon Snap",
+                                   "Pokemon Ranger: Shadows of Almia",
+                                   "Pokemon Ranger",
+                                   "Pokemon Mystery Dungeon: Red/Blue Rescue Team",
+                                   "Pokemon Battle Revolution",
+                                   "Pokemon Mystery Dungeon: Explorers of Sky",
+                                   "Pokemon Pinball: Ruby & Sapphire",
+                                   "Pokemon Ranger: Guardian Signs",
+                                   "Pokemon Mystery Dungeon: Gates to Infinity",
+                                   "Pokemon XD: Gale of Darkness",
+                                   "Pokemon Super Mystery Dungeon",
+                                   "Pokemon Rumble Blast",
+                                   "Pokemon Conquest",
+                                   "Pokemon Card GB2: Here Comes Team GR!",
+                                   "Pokemon Dash",
+                                   "Pokemon Trozei!",
+                                   "Pokemon Art Academy",
+                                   "Pokemon Puzzle League", 
+                                   "Pokemon Channel", 
+                                   "Battle & Get! Pokemon Typing DS",
+                                   "Pokemon Box: Ruby & Sapphire",
+                                   "Pokemon Rumble World",
+                                   "Pok?mon Platinum Version",
+                                   "Pok?mon Emerald Version",
+                                   "Pok?mon Crystal Version",
+                                   "Pok?mon Stadium 2","Pok?mon Colosseum",
+                                   "Pok?mon Mystery Dungeon: Blue Rescue Team", 
+                                   "Pok?Park Wii: Pikachu's Adventure",
+                                   "Pok?mon Mystery Dungeon: Red Rescue Team (US weekly sales)",
+                                   "Pokken Tournament", 
+                                   "PokePark 2: Wonders Beyond",
+                                   "Pok?mon I Choose You / Squirtle Squad Game Boy Advance Video", 
+                                   "Pok?mon Beach Blank-out Blastoise / Go West Young Meowth Game Boy Advance Video", 
+                                   "Pok?mon: Johto Photo Finish: Game Boy Advance Video",
+                                   "Pok?mon: For Ho-Oh the Bells Toll!: Game Boy Advance Video", 
+                                   "Hey You, Pikachu!"), "Pokemon", Name)) %>% 
   mutate(Name = ifelse(Name %in% c("Pac-Man Collection","Pac-Man: Adventures in Time","Ms. Pac-Man","Pac-Man","Jr. Pac-Man","Pac-Man Player's Choice Bundle","Pac-Man Party","Classic NES Series: Pac-Man","Pac-Man All-Stars","Pac-Man Fever","Pac-Pix","Ms. Pac-Man: Maze Madness / Pac-Man World","Ms. Pac-Man: Maze Madness","Pac-Man & Galaga Dimensions","Pac-Man Party 3D","Pac-Man Pinball Advance","Pac-Man World 2","Pac-Man Power Pack","Pac-Man World 3","Pac-Man and the Ghostly Adventures 2","PAC-MAN and the Ghostly Adventures","Pac-Man World Rally"), "Pac-Man", Name)) %>%
   mutate(Name = ifelse(Name %in% c("Call of Duty: Modern Warfare 3","Call of Duty: Black Ops","Call of Duty: Black Ops 3","Call of Duty: Black Ops II","Call of Duty: Modern Warfare 2","Call of Duty: Ghosts","Call of Duty 4: Modern Warfare","Call of Duty: Advanced Warfare","Call of Duty: World at War","Call of Duty: Finest Hour","Call of Duty 3","Call Of Duty 2: Big Red One","Call of Duty: Roads to Victory","Call of Duty 2","Call of Duty: World at War","Call of Duty: World at War Final Fronts","Call of Duty Black Ops: Declassified","Call of Duty: Modern Warfare: Reflex Edition", "Call of Duty: Modern Warfare: Mobilized","Call of Duty: Modern Warfare 3: Defiance","Call of Duty: The War Collection","Call of Duty: Modern Warfare Trilogy"), "Call of Duty", Name)) %>% 
   mutate(Name = ifelse(Name %in% c("The Sims 3","The Sims: Unleashed","MySims","The Sims: Vacation","The Sims: Livin Large","The Sims 4","The Sims","The Sims: Bustin' Out","The Sims: House Party","The Sims 2: Pets","The Sims: Makin' Magic","The Sims: Hot Date","The Urbz: Sims in the City","The Sims 3: Late Night Expansion Pack","The Sims: Superstar","MySims","MySims Kingdom","The Sims 2","The Sims 2: Nightlife","The Sims 2: Castaway","MySims Agents","The Sims 2: Apartment Pets","The Sims: Medieval","The Sims 3: High-End Loft Stuff","The Sims 3: Generations","MySims Racing","The Sims 3: World Adventures","The Sims 2: Open for Business","The Sims 3: Ambitions","The Sims 3: Outdoor Living Stuff","The Urbz: Sims in the City (all regions sales)","The Sims 3: Town Life Stuff","MySims SkyHeroes","MySims Party","The Sims 4: Get Together","The Sims 3: Seasons","The Sims Medieval: Pirates and Nobles","MySims Collection","The Sims 2: Apartment Life","The Sims 2: Ikea Home Stuff","The Sims 3: Fast Lane Stuff","The Sims 3: Barnacle Bay","The Sims 2: Seasons","The Sims 2: University","The Sims Deluxe","The Sims 4: Spa Day","The Sims 2: Glamour Life Stuff","The Sims 2: Bon Voyage","The Sims: Complete Collection","The Sims 2: Happy Holiday Stuff","The Sims 2: Family Fun Stuff","The Sims 4: Luxury Party Stuff"),"The Sims", Name)) %>% 
@@ -374,12 +434,14 @@ From this, we see that Wii Sports is most selling followed by Grand theft Auto V
 
 ### Lessons learned: 
 
+We learned how to create multi-layered charts that show more than just a x and y axis, where a third aspect of how one variable can affect the outcome of a chart and give more information to a story. Also adding animation to static plots in order to help visualize a better story of data over time. 
+
 ### Challenges: 
 
-Throughout our exploration of the data, we saw several limitations that prevented us from doing exactly what we wanted to do. These included the types of variables used for genre as what constituted what as a genre in games. From our experience, we thought that some games could be classified as other genres from what it was in the dataset. The dataset was quite limited as we wanted look at the sales in specific regions around the world but there was only specific details about major contributors to the industry. 
+Throughout our exploration of the data, we saw several limitations that prevented us from doing exactly what we wanted to do. These included the types of variables used for genre as what constituted what as a genre in games as well as multi-genred games. From our experience, we thought that some games could be classified as other genres from what it was in the dataset. The dataset was quite limited as we wanted look at the sales in specific regions around the world but there was only specific details about major contributors to the industry. 
 
 
 ### Conclusion: 
 
-From our explorations of video game sales, we can conclude that the majority of consumers greatly enjoy some genres over others with Action, Sports, and Shooters taking the most global sales. It seems as if individuals find entertainment in doing things that are intangible in reality. As we look at different locations around the world, the popularity of genres, platforms, and individual games are quite different, giving evidence to differing cultural and social values. Furthermore, the advancement of technology towards quality and interface capabilities play a major role in appealing to consumer and video game enthusiast around the world. 
+From our explorations of video game sales, we can conclude that the majority of consumers greatly enjoy some genres over others with Action, Sports, and Shooters taking the most global sales. It seems as if individuals find entertainment in doing things that are intangible to reality. As we look at different locations around the world, the popularity of genres, platforms, and individual games are quite different, giving evidence to differing cultural and social values. Furthermore, the advancement of technology towards quality and interface capabilities play a major role in appealing to consumer and video game enthusiast around the world. 
 
