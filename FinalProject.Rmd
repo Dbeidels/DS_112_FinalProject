@@ -32,7 +32,6 @@ vgsales <- read_csv("vgsales.csv", col_types = cols(Year = col_integer() ))
 vgsales
 ```
 
-## Final Project Outline
 
 ### Title: 
 
