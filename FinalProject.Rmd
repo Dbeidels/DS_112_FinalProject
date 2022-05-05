@@ -47,21 +47,21 @@ An introduction that motivates & outlines a clear, specific set of research ques
 
 ##### Introduction
 
-Since the advancement of technology, the creation of video games has played an influential role in being a source of entertainment for everyone around the world. From the multitude of video games that have been created, everyone is able to find something that they enjoy in order to pass time, have fun, and fulfill their creative needs. With this idea, we wanted to look at how well different games, genres, and platforms did when it came to releasing games for everyone to play. This will allow us to understand how popularity ranks up between different types of games based on the sales around of the world. 
+Since the advancement of technology, the creation of video games has played an influential role in being a source of entertainment for everyone around the world. From the multitude of video games that have been created, everyone is able to find something that they enjoy in order to pass time, have fun, and fulfill their creative needs. With this idea, we wanted to look at how well different games, genres, and platforms did when it came to releasing games for everyone to play. This will allow us to understand how popularity ranks up between different types of games based on the sales around of the world. In addition, we were also curious on how much revenue this industry makes as we spent our own money to fully experience these games. 
 
 ##### Background information
 
-Since our individual discovery, we have always had interest in video games and wondered how the sales of these games differed across the world as we grew up in different regions. 
+Since our individual discovery, we have always had interest in video games and wondered how the sales of these games differed across the world as we grew up in different regions. Furthermore,  the video games industry has gained popularity and interactivity over the years with the release of evolving tech and we wanted to see how these sales were reflected. 
 
 #### Research Questions
 
-What are the most popular games over the years?
+What are the most selling genres of games over the years? And across different regions?
 
 What are the most selling platforms of games over the years across different regions?
 
-What is the most selling genre of games over the years across different regions?
+What are the most selling game franchises based on global sales?
 
-Who is the most selling publisher of games over the years across different regions?
+What are the most popular games over the years?
 
 #### Data collection: 
 
@@ -111,9 +111,9 @@ action 1995,another spike in 2001, and gradual linear path
 role playing 1995, steady linear path 
 
 
-Next, we looked at the total sales of each genre in different locations including North America, Europe, Japan, and other Global regions. 
+Next, we looked at the total sales of each genre in different locations including North America, Europe, Japan, and other areas that aren't considered from the former three. 
 
-```{r}
+```{r, fig.alt = "Column chart showing the total sales of each genre in different locations.", echo = FALSE}
 regiongenresales <- vgsales %>%
   group_by( Genre) %>% 
   summarize(total_NA_genre_sum = sum(NA_Sales), 
@@ -186,19 +186,12 @@ g3
 g4
 ```
 
-From these graphs, we found that Action remained the highest selling genre in North America, Europe, and other regions. Although, it was a different story for Japan as Role-playing was the most popular genre, about two times higher than the second competing genre of Action. With this information, we then wanted to see how 
+From these graphs, we found that Action remained the highest selling genre in North America, Europe, and other regions. Although, it was a different story for Japan as Role-playing was the most popular genre, about two times higher than the second competing genre of Action. With this information, we then wanted to see how different genres were spread out through the different platforms and determine if there was a connection between the platforms and the sales of specific genres. 
 
 
 Platform: Looking at the total sales in North America, Europe, Japan, and other Global regions by platform
 
-```{r}
-vgsales %>% 
-  group_by(Genre, Platform) %>% 
-  summarise(tvs = sum(Global_Sales),tnavs = sum(NA_Sales)) %>% 
-  arrange(Genre,desc(tvs))
-```
-
-```{r, fig.height=14, fig.width=12}
+```{r, fig.height = 14, fig.width = 12, echo = FALSE}
 regionplatformsales <- vgsales %>%
   group_by(Platform, Genre) %>% 
   summarize(total_NA_platform_sum = sum(NA_Sales), 
@@ -227,6 +220,7 @@ p1 <- regionplatformsales %>%
   scale_fill_manual(values = c("red", "green","blue","black", "yellowgreen", "deeppink","cyan","darkmagenta","steelblue","midnightblue","gold", "green4"))+
   labs(x = "", 
        y = "",
+       fill = "Genre",
        caption = "Plot created by D.B. & B.A., Data from Vgsales",
        title = "North American Sales by Platform")
 
@@ -241,6 +235,7 @@ p2 <- regionplatformsales %>%
   scale_fill_manual(values = c("red", "green","blue","black", "yellowgreen", "deeppink","cyan","darkmagenta","steelblue","midnightblue","gold", "green4")) +
   labs(x = "", 
        y = "",
+       fill = "Genre",
        caption = "Plot created by D.B. & B.A., Data from Vgsales",
        title = "European Sales by Platform")
 
@@ -254,6 +249,7 @@ p3 <- regionplatformsales %>%
   scale_fill_manual(values = c("red", "green","blue","black", "yellowgreen", "deeppink","cyan","darkmagenta","steelblue","midnightblue","gold", "green4"))+
   labs(x = "", 
        y = "",
+       fill = "Genre",
        caption = "Plot created by D.B. & B.A., Data from Vgsales",
        title ="Japanese Sales by Platform")
 
@@ -268,6 +264,7 @@ p4 <- regionplatformsales %>%
   scale_fill_manual(values = c("red", "green","blue","black", "yellowgreen", "deeppink","cyan","darkmagenta","steelblue","midnightblue","gold", "green4"))+
   labs(x = "", 
        y = "",
+       fill = "Genre",
        caption = "Plot created by D.B. & B.A., Data from Vgsales",
        title ="Other Region Sales by Platform")
 
@@ -281,6 +278,7 @@ p5 <- regionplatformsales %>%
   scale_fill_manual(values = c("red", "green","blue","black", "yellowgreen", "deeppink","cyan","darkmagenta","steelblue","midnightblue","gold", "green4"))+
   labs(x = "", 
        y = "",
+       fill = "Genre",
        caption = "Plot created by D.B. & B.A., Data from Vgsales",
        title ="Global Sales by Platform")
 
@@ -292,9 +290,13 @@ p5
 
 ```
 
+From these graphs, we see that in NA, the top genres are sold consistently well in all platforms, especially xbox 360. In EU and other regions, we see a similar patterns with top 3 genres selling well on all platforms, especially PS3 and PS2. In Japan, role playing outsold all the genres in all platforms with DS seeing the major part of sales. 
+
+After learning this, these genres have franchises that bring the majority of the sales so we wanted to take a look at the leading franchises of these genres.  
+
 Franchises: Looking at the most popular video game franchises based on global sells  
 
-```{r}
+```{r, echo = FALSE}
 vgsales %>%
   mutate(Name = ifelse(Name == "Minecraft: Story Mode", "Minecraft", Name)) %>%
   mutate(Name = ifelse(Name %in% c("Grand Theft Auto V","Grand Theft Auto: Liberty City Stories","Grand Theft Auto 2","Rockstar Games Double Pack: Grand Theft Auto III & Grand Theft Auto Vice City","Grand Theft Auto: Chinatown Wars","Grand Theft Auto: San Andreas","Grand Theft Auto: Vice City Stories","Grand Theft Auto IV","Grand Theft Auto: San Andreas","Grand Theft Auto: Mission Pack #1, London 1969","Grand Theft Auto: Vice City","Grand Theft Auto III"), "Grand Theft Auto", Name)) %>% 
@@ -339,30 +341,34 @@ vgsales %>%
            Name == "Fifa") %>% 
   arrange(desc(tgvs)) %>% 
   ggplot(aes(x = tgvs,
-             y = fct_reorder(Name, tgvs))) +
+             y = fct_reorder(Name, tgvs),
+             fill=factor(Name))) +
   geom_col() +
-  #scale_fill_manual(values = c("red","black", "yellow", "deeppink", "cyan",
-                              #"darkmagenta","steelblue","midnightblue","gold")) +
+  scale_fill_manual(values = c("gray45","black", "lightblue", "orange", "red","darkgreen","yellow","yellow","purple", "green")) +
   labs(x = "", 
        y = "",
        caption = "Plot created by D.B. & B.A., Data from Vgsales",
-       title = "Most Popular Franchises by Global Sales") 
+       title = "Most Popular Franchises by Global Sales") +
+  theme(legend.position = "none")
 ```
 
+From this graph, we saw that the most selling franchise was Call of Duty followed by Pokemon. This makes sense from our personal experience that these franchises would be the most selling. 
+
+After learning this, we wanted to take a look at the most selling individual games and determine which games from these franchises sold the best. 
 
 Individual Games: Looking at what games were the most popular and had the most sales over time
 
-```{r, fig.height = 6.5, fig.width = 10}
+```{r, fig.height = 6.5, fig.width = 10, echo = FALSE}
 vgsales %>% 
   group_by(Name,Genre) %>% 
   summarize(total_gs = sum(Global_Sales)) %>% 
-  filter(total_gs>20) %>% 
+  filter(total_gs>30) %>% 
   arrange(desc(total_gs)) %>% 
   ggplot(aes(x = total_gs,
              y = fct_reorder(Name, total_gs),
              fill = Genre)) +
   geom_col() +
-  scale_fill_manual(values = c("red","black", "yellow", "deeppink", "cyan",
+  scale_fill_manual(values = c("red","yellow","deeppink", "cyan",
                               "darkmagenta","steelblue","midnightblue","gold")) +
   labs(x = "", 
        y = "", 
@@ -370,12 +376,11 @@ vgsales %>%
        title = "Most Popular Games by Global Sales") 
 ```
 
-Action: 3 games
-Misc: 4 games
-Platform: 6 games
-Puzzle: 1 game
-Racing: 2 games
-Role-playing: 2 games 
-Shooter: 7 games
-Simulation: 1 games 
-Sports: 4 games 
+From this, we see that Wii Sports is most selling followed by Grand theft Auto. 
+
+Lessons learned:
+
+Challenges: Throughout our exploration of the data, we saw several limitations that prevented us from doing exactly what we wanted to do. These included the types of variables used for genre as what constituted what as a genre in games. The dataset was limited as we wanted look at the sales in specific regions around the world 
+
+
+Conclusion
