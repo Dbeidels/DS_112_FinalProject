@@ -1,5 +1,5 @@
 ---
-title: "Final Project Graphs"
+title: "Final Project Report"
 author: "Brian Anderson and Daniel Beidelshcies"
 output: 
   html_document:
@@ -21,6 +21,7 @@ library(transformr)    # for "tweening" (gganimate)
 library(gifski)        # for creating the gif
 library(shiny)         # for creating interactive apps
 library(readr)
+library(patchwork)
 theme_set(theme_minimal()) # My favorite ggplot() theme :)
 ```
 
@@ -31,17 +32,17 @@ vgsales <- read_csv("vgsales.csv", col_types = cols(Year = col_number()))
 vgsales
 ```
 
-### Final Project Outline
+## Final Project Outline
 
-#### Title: 
+### Title: 
 
 In the YAML section of the document. A descriptive title & list of all group members.
 
-*Exploring the World of Video Games*
+**Exploring the World of Video Games**
 
 Daniel Beidelschies and Brian Anderson
 
-#### Introduction and Background: 
+### Introduction and Background: 
 
 An introduction that motivates & outlines a clear, specific set of research questions. Also, provide some background on your topic.
 
@@ -49,27 +50,27 @@ An introduction that motivates & outlines a clear, specific set of research ques
 
 Since the advancement of technology, the creation of video games has played an influential role in being a source of entertainment for everyone around the world. From the multitude of video games that have been created, everyone is able to find something that they enjoy in order to pass time, have fun, and fulfill their creative needs. With this idea, we wanted to look at how well different games, genres, and platforms did when it came to releasing games for everyone to play. This will allow us to understand how popularity ranks up between different types of games based on the sales around of the world. In addition, we were also curious on how much revenue this industry makes as we spent our own money to fully experience these games. 
 
-##### Background information
+#### Background information
 
-Since our individual discovery, we have always had interest in video games and wondered how the sales of these games differed across the world as we grew up in different regions. Furthermore,  the video games industry has gained popularity and interactivity over the years with the release of evolving tech and we wanted to see how these sales were reflected. 
+Since our individual discovery, we have always had interest in video games and wondered how the sales of these games differed across the world as we grew up in different regions. Furthermore, the video games industry has gained popularity and interactivity over the years with the release of evolving tech and we wanted to see how these sales were reflected. 
 
-#### Research Questions
+### Research Questions
 
 What are the most selling genres of games over the years? And across different regions?
 
-What are the most selling platforms of games over the years across different regions?
+What are the most selling platforms of games over the years across different regions? Is there connection between platforms sold and genre popularity?
 
 What are the most selling game franchises based on global sales?
 
-What are the most popular games over the years?
+What are the ten most popular games over the years?
 
-#### Data collection: 
+### Data collection: 
 
 Specification of your data sources and collection process.
 
 Scraping from Kaggle and importing to a dataset
 
-#### Analysis: 
+### Analysis: 
 
 This is the bulk of the report which either has a presentation of the group’s key findings and take-aways or gives the detail of how someone would interact and what people should take away from the shiny app. If you choose to do a shiny app, be sure to include a link to the shinyapps.io site.
 
@@ -103,17 +104,11 @@ vgsales %>%
   transition_reveal(Year)
 ```
 
-From this animated graph, we saw that the action genre was the most popular by the end of the time period in 2020. It was followed by 
+From this animated graph, we saw that the Action genre was the most popular by the end of the time period in 2020. It was followed by Sports, Shooting, Role-playing, and Platform. At the beginning of the graph, platform was most selling until around the early 2000s when Action, Sports, Role-playing took a major incline. Furthermore, Action and experienced a gradual linear path whereas Shooting, Role-Playing, and Platform followed a steady linear path. 
 
-When did each genre become popular?
+Next, we looked at the total sales of each genre in different locations around the world including North America, Europe, Japan, and other areas that aren't considered from the former three. 
 
-action 1995,another spike in 2001, and gradual linear path
-role playing 1995, steady linear path 
-
-
-Next, we looked at the total sales of each genre in different locations including North America, Europe, Japan, and other areas that aren't considered from the former three. 
-
-```{r, fig.alt = "Column chart showing the total sales of each genre in different locations.", echo = FALSE}
+```{r, fig.alt = "Column chart showing the total global sales of each genre in different locations.", echo = FALSE}
 regiongenresales <- vgsales %>%
   group_by( Genre) %>% 
   summarize(total_NA_genre_sum = sum(NA_Sales), 
@@ -186,12 +181,13 @@ g3
 g4
 ```
 
-From these graphs, we found that Action remained the highest selling genre in North America, Europe, and other regions. Although, it was a different story for Japan as Role-playing was the most popular genre, about two times higher than the second competing genre of Action. With this information, we then wanted to see how different genres were spread out through the different platforms and determine if there was a connection between the platforms and the sales of specific genres. 
+
+From these graphs, we found that Action remained the highest selling genre in North America, Europe, and other regions. Although, it was a different story for Japan as Role-playing was the most popular genre, about two times higher than the second competing genre of Action. 
+
+With this information, we then wanted to see how different genres were spread throughout the different platforms and determine if there was a connection between the platforms and the sales of specific genres. 
 
 
-Platform: Looking at the total sales in North America, Europe, Japan, and other Global regions by platform
-
-```{r, fig.height = 14, fig.width = 12, echo = FALSE}
+```{r, fig.height = 10, fig.width = 12, fig.alt = "Column chart showing the total sales of each platform in different locations with the distribution of each genre.", echo = FALSE}
 regionplatformsales <- vgsales %>%
   group_by(Platform, Genre) %>% 
   summarize(total_NA_platform_sum = sum(NA_Sales), 
@@ -290,13 +286,12 @@ p5
 
 ```
 
-From these graphs, we see that in NA, the top genres are sold consistently well in all platforms, especially xbox 360. In EU and other regions, we see a similar patterns with top 3 genres selling well on all platforms, especially PS3 and PS2. In Japan, role playing outsold all the genres in all platforms with DS seeing the major part of sales. 
+From these graphs, we see that in North America, the top genres are sold consistently well in all platforms, especially Xbox 360. In Europe and other regions, we see similar patterns with top three genres selling well on all platforms, especially PS3 and PS2 respectively. In Japan, Role playing outsold all the genres in every platform with DS seeing the major part of sales. 
 
-After learning this, these genres have franchises that bring the majority of the sales so we wanted to take a look at the leading franchises of these genres.  
+It can be understood that these genres have franchises that bring the majority of the sales so we wanted to take a look at how well the leading franchises of these genres did in terms of global sales. In addition, we looked to understand how our favorite franchises ranked up against each other. 
 
-Franchises: Looking at the most popular video game franchises based on global sells  
 
-```{r, echo = FALSE}
+```{r, fig.alt = "Column chart showing the total global sales of popular video game franchises.", echo = FALSE}
 vgsales %>%
   mutate(Name = ifelse(Name == "Minecraft: Story Mode", "Minecraft", Name)) %>%
   mutate(Name = ifelse(Name %in% c("Grand Theft Auto V","Grand Theft Auto: Liberty City Stories","Grand Theft Auto 2","Rockstar Games Double Pack: Grand Theft Auto III & Grand Theft Auto Vice City","Grand Theft Auto: Chinatown Wars","Grand Theft Auto: San Andreas","Grand Theft Auto: Vice City Stories","Grand Theft Auto IV","Grand Theft Auto: San Andreas","Grand Theft Auto: Mission Pack #1, London 1969","Grand Theft Auto: Vice City","Grand Theft Auto III"), "Grand Theft Auto", Name)) %>% 
@@ -352,13 +347,12 @@ vgsales %>%
   theme(legend.position = "none")
 ```
 
-From this graph, we saw that the most selling franchise was Call of Duty followed by Pokemon. This makes sense from our personal experience that these franchises would be the most selling. 
+Based on this graph, we saw that the most selling franchise was Call of Duty followed by Pokemon. This makes sense from our personal experience that these franchises would be the most selling. It was interesting to see that a Shooter genre was the highest selling despite Action being the fan favorite. 
 
 After learning this, we wanted to take a look at the most selling individual games and determine which games from these franchises sold the best. 
 
-Individual Games: Looking at what games were the most popular and had the most sales over time
 
-```{r, fig.height = 6.5, fig.width = 10, echo = FALSE}
+```{r, fig.width = 8, fig.alt = "Column chart showing the total global sales of the  top ten most popular video games.", echo = FALSE}
 vgsales %>% 
   group_by(Name,Genre) %>% 
   summarize(total_gs = sum(Global_Sales)) %>% 
@@ -376,11 +370,16 @@ vgsales %>%
        title = "Most Popular Games by Global Sales") 
 ```
 
-From this, we see that Wii Sports is most selling followed by Grand theft Auto. 
+From this, we see that Wii Sports is most selling followed by Grand theft Auto V. Individual games from some of the major franchises are clearly represented with some repeated genres. It can be seen that highest selling games belong to certain genres and that consumers prefer one over another. 
 
-Lessons learned:
+### Lessons learned: 
 
-Challenges: Throughout our exploration of the data, we saw several limitations that prevented us from doing exactly what we wanted to do. These included the types of variables used for genre as what constituted what as a genre in games. The dataset was limited as we wanted look at the sales in specific regions around the world 
+### Challenges: 
+
+Throughout our exploration of the data, we saw several limitations that prevented us from doing exactly what we wanted to do. These included the types of variables used for genre as what constituted what as a genre in games. From our experience, we thought that some games could be classified as other genres from what it was in the dataset. The dataset was quite limited as we wanted look at the sales in specific regions around the world but there was only specific details about major contributors to the industry. 
 
 
-Conclusion
+### Conclusion: 
+
+From our explorations of video game sales, we can conclude that the majority of consumers greatly enjoy some genres over others with Action, Sports, and Shooters taking the most global sales. It seems as if individuals find entertainment in doing things that are intangible in reality. As we look at different locations around the world, the popularity of genres, platforms, and individual games are quite different, giving evidence to differing cultural and social values. Furthermore, the advancement of technology towards quality and interface capabilities play a major role in appealing to consumer and video game enthusiast around the world. 
+
