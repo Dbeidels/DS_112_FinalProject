@@ -25,14 +25,6 @@ library(patchwork)
 theme_set(theme_minimal()) # My favorite ggplot() theme :)
 ```
 
-## Data choice: Video Game Sales
-
-```{r, echo = FALSE}
-vgsales <- read_csv("vgsales.csv", col_types = cols(Year = col_integer() ))
-vgsales
-```
-
-
 ### Title: 
 
 In the YAML section of the document. A descriptive title & list of all group members.
@@ -69,6 +61,11 @@ Specification of your data sources and collection process.
 
 Scraping from Kaggle and importing to a dataset
 
+```{r, echo = FALSE}
+vgsales <- read_csv("vgsales.csv", col_types = cols(Year = col_integer() ))
+vgsales
+```
+
 ### Analysis: 
 
 This is the bulk of the report which either has a presentation of the group’s key findings and take-aways or gives the detail of how someone would interact and what people should take away from the shiny app. If you choose to do a shiny app, be sure to include a link to the shinyapps.io site.
@@ -103,7 +100,7 @@ vgsales %>%
   transition_reveal(Year)
 ```
 
-From this animated graph, we saw that the Action genre was the most popular by the end of the time period in 2020. It was followed by Sports, Shooting, Role-playing, and Platform. At the beginning of the graph, platform was most selling until around the early 2000s when Action, Sports, Role-playing took a major incline. Furthermore, Action and experienced a gradual linear path whereas Shooting, Role-Playing, and Platform followed a steady linear path. 
+From this animated graph, we saw that the Action genre was the most popular by the end of the time period in 2020. It was followed by Sports, Shooting, Role-playing, and Platform. At the beginning of the graph, platform was most selling until around the early 2000s when Action, Sports, Role-playing took a major incline. Furthermore, Action and Sports experienced a gradual linear path whereas Shooting, Role-Playing, and Platform followed a steady linear path. 
 
 Next, we looked at the total sales of each genre in different locations around the world including North America, Europe, Japan, and other areas that aren't considered from the former three. 
 
@@ -198,7 +195,10 @@ regionplatformsales <- vgsales %>%
   complete(Platform) %>% 
   arrange(Platform) %>% 
   group_by(Platform) %>% 
-  replace_na(list(total_NA_platform_sum = 0, total_EU_platform_sum  = 0, total_JP_platform_sum  = 0, total_other_platform_sum = 0)) %>% 
+  replace_na(list(total_NA_platform_sum = 0, 
+                  total_EU_platform_sum  = 0, 
+                  total_JP_platform_sum  = 0, 
+                  total_other_platform_sum = 0)) %>% 
   mutate(cum_NA_plat_sum = cumsum(total_NA_platform_sum), 
          cum_EU_plat_sum = cumsum(total_EU_platform_sum),
          cum_JP_plat_sum = cumsum(total_JP_platform_sum),
@@ -207,9 +207,9 @@ regionplatformsales <- vgsales %>%
   
 p1 <- regionplatformsales %>% 
   filter(total_NA_platform_sum >0) %>% 
-  ggplot()+
+  ggplot() +
   geom_col(aes(x = total_NA_platform_sum,
-             y = fct_reorder(Platform,cum_NA_plat_sum),
+             y = fct_reorder(Platform, cum_NA_plat_sum),
              fill = factor(Genre),
              group = Platform))+
   scale_fill_manual(values = c("red", "green","blue","black", "yellowgreen", "deeppink","cyan","darkmagenta","steelblue","midnightblue","gold", "green4"))+
@@ -222,9 +222,9 @@ p1 <- regionplatformsales %>%
 p2 <- regionplatformsales %>% 
   replace_na(list(cum_global_plat_sum = 0)) %>%
   filter(cum_global_plat_sum >0) %>% 
-  ggplot()+
+  ggplot() +
   geom_col(aes(x = total_EU_platform_sum,
-             y = fct_reorder(Platform,cum_EU_plat_sum),
+             y = fct_reorder(Platform, cum_EU_plat_sum),
              fill = factor(Genre),
              group = Platform))+
   scale_fill_manual(values = c("red", "green","blue","black", "yellowgreen", "deeppink","cyan","darkmagenta","steelblue","midnightblue","gold", "green4")) +
@@ -236,9 +236,9 @@ p2 <- regionplatformsales %>%
 
 p3 <- regionplatformsales %>% 
   filter(total_JP_platform_sum >0) %>% 
-  ggplot()+
+  ggplot() +
   geom_col(aes(x = total_JP_platform_sum,
-             y = fct_reorder(Platform,cum_JP_plat_sum),
+             y = fct_reorder(Platform, cum_JP_plat_sum),
              fill = factor(Genre),
              group = Platform))+
   scale_fill_manual(values = c("red", "green","blue","black", "yellowgreen", "deeppink","cyan","darkmagenta","steelblue","midnightblue","gold", "green4"))+
@@ -251,9 +251,9 @@ p3 <- regionplatformsales %>%
 p4 <- regionplatformsales %>% 
   replace_na(list(cum_global_plat_sum = 0)) %>%
   filter(cum_global_plat_sum >0) %>% 
-  ggplot()+
+  ggplot() +
   geom_col(aes(x = total_other_platform_sum,
-             y = fct_reorder(Platform,cum_other_plat_sum),
+             y = fct_reorder(Platform, cum_other_plat_sum),
              fill = factor(Genre),
              group = Platform))+
   scale_fill_manual(values = c("red", "green","blue","black", "yellowgreen", "deeppink","cyan","darkmagenta","steelblue","midnightblue","gold", "green4"))+
@@ -265,9 +265,9 @@ p4 <- regionplatformsales %>%
 
 p5 <- regionplatformsales %>% 
   filter(total_global_platform_sum >0) %>% 
-  ggplot()+
+  ggplot() +
   geom_col(aes(x = total_global_platform_sum,
-             y = fct_reorder(Platform,cum_global_plat_sum),
+             y = fct_reorder(Platform, cum_global_plat_sum),
              fill = factor(Genre),
              group = Platform))+
   scale_fill_manual(values = c("red", "green","blue","black", "yellowgreen", "deeppink","cyan","darkmagenta","steelblue","midnightblue","gold", "green4"))+
@@ -285,7 +285,7 @@ p5
 
 ```
 
-From these graphs, we see that in North America, the top genres are sold consistently well in all platforms, especially Xbox 360. In Europe and other regions, we see similar patterns with top three genres selling well on all platforms, especially PS3 and PS2 respectively. In Japan, Role playing outsold all the genres in every platform with DS seeing the major part of sales. 
+From these graphs we see that in North America, the top genres are sold consistently well in all platforms, especially Xbox 360. In Europe and other regions, we see similar patterns with top three genres selling well on all platforms, especially PS3 and PS2 respectively. In Japan, Role playing outsold all the genres in every platform with DS seeing the major part of sales. 
 
 It can be understood that these genres have franchises that bring the majority of the sales so we wanted to take a look at how well the leading franchises of these genres did in terms of global sales. In addition, we looked to understand how our favorite franchises ranked up against each other. 
 
@@ -381,12 +381,215 @@ vgsales %>%
                                    "Pok?mon Beach Blank-out Blastoise / Go West Young Meowth Game Boy Advance Video", 
                                    "Pok?mon: Johto Photo Finish: Game Boy Advance Video",
                                    "Pok?mon: For Ho-Oh the Bells Toll!: Game Boy Advance Video", 
-                                   "Hey You, Pikachu!"), "Pokemon", Name)) %>% 
-  mutate(Name = ifelse(Name %in% c("Pac-Man Collection","Pac-Man: Adventures in Time","Ms. Pac-Man","Pac-Man","Jr. Pac-Man","Pac-Man Player's Choice Bundle","Pac-Man Party","Classic NES Series: Pac-Man","Pac-Man All-Stars","Pac-Man Fever","Pac-Pix","Ms. Pac-Man: Maze Madness / Pac-Man World","Ms. Pac-Man: Maze Madness","Pac-Man & Galaga Dimensions","Pac-Man Party 3D","Pac-Man Pinball Advance","Pac-Man World 2","Pac-Man Power Pack","Pac-Man World 3","Pac-Man and the Ghostly Adventures 2","PAC-MAN and the Ghostly Adventures","Pac-Man World Rally"), "Pac-Man", Name)) %>%
-  mutate(Name = ifelse(Name %in% c("Call of Duty: Modern Warfare 3","Call of Duty: Black Ops","Call of Duty: Black Ops 3","Call of Duty: Black Ops II","Call of Duty: Modern Warfare 2","Call of Duty: Ghosts","Call of Duty 4: Modern Warfare","Call of Duty: Advanced Warfare","Call of Duty: World at War","Call of Duty: Finest Hour","Call of Duty 3","Call Of Duty 2: Big Red One","Call of Duty: Roads to Victory","Call of Duty 2","Call of Duty: World at War","Call of Duty: World at War Final Fronts","Call of Duty Black Ops: Declassified","Call of Duty: Modern Warfare: Reflex Edition", "Call of Duty: Modern Warfare: Mobilized","Call of Duty: Modern Warfare 3: Defiance","Call of Duty: The War Collection","Call of Duty: Modern Warfare Trilogy"), "Call of Duty", Name)) %>% 
-  mutate(Name = ifelse(Name %in% c("The Sims 3","The Sims: Unleashed","MySims","The Sims: Vacation","The Sims: Livin Large","The Sims 4","The Sims","The Sims: Bustin' Out","The Sims: House Party","The Sims 2: Pets","The Sims: Makin' Magic","The Sims: Hot Date","The Urbz: Sims in the City","The Sims 3: Late Night Expansion Pack","The Sims: Superstar","MySims","MySims Kingdom","The Sims 2","The Sims 2: Nightlife","The Sims 2: Castaway","MySims Agents","The Sims 2: Apartment Pets","The Sims: Medieval","The Sims 3: High-End Loft Stuff","The Sims 3: Generations","MySims Racing","The Sims 3: World Adventures","The Sims 2: Open for Business","The Sims 3: Ambitions","The Sims 3: Outdoor Living Stuff","The Urbz: Sims in the City (all regions sales)","The Sims 3: Town Life Stuff","MySims SkyHeroes","MySims Party","The Sims 4: Get Together","The Sims 3: Seasons","The Sims Medieval: Pirates and Nobles","MySims Collection","The Sims 2: Apartment Life","The Sims 2: Ikea Home Stuff","The Sims 3: Fast Lane Stuff","The Sims 3: Barnacle Bay","The Sims 2: Seasons","The Sims 2: University","The Sims Deluxe","The Sims 4: Spa Day","The Sims 2: Glamour Life Stuff","The Sims 2: Bon Voyage","The Sims: Complete Collection","The Sims 2: Happy Holiday Stuff","The Sims 2: Family Fun Stuff","The Sims 4: Luxury Party Stuff"),"The Sims", Name)) %>% 
-  mutate(Name = ifelse(Name %in% c("Final Fantasy VII","Final Fantasy X","Final Fantasy VIII","Final Fantasy XII","Final Fantasy XIII","Final Fantasy IX","Final Fantasy X-2","Final Fantasy III","Crisis Core: Final Fantasy VII","Final Fantasy XIII-2","Final Fantasy V","Final Fantasy Tactics","Dissidia: Final Fantasy","Final Fantasy Tactics Advance","Final Fantasy II","Final Fantasy XIV: A Realm Reborn","Final Fantasy: Crystal Chronicles","Dirge of Cerberus: Final Fantasy VII","Final Fantasy XII: Revenant Wings","Final Fantasy X / X-2 HD Remaster","Final Fantasy IV","Final Fantasy I & II: Dawn of Souls","Final Fantasy Tactics: The War of the Lions","The Final Fantasy Legend","Lightning Returns: Final Fantasy XIII","Final Fantasy Type-0","Dissidia 012: Duodecim Final Fantasy","Final Fantasy","Final Fantasy XI: Wings of the Goddess","Final Fantasy Anthology","Final Fantasy Tactics A2: Grimoire of the Rift","Final Fantasy Legend III","Final Fantasy Crystal Chronicles: Ring of Fates","Final Fantasy VII International","Final Fantasy IV Advance","Final Fantasy: The 4 Heroes of Light","Final Fantasy Anniversary Edition","Final Fantasy IV: The Complete Collection","Final Fantasy Chronicles","Final Fantasy Explorers","Final Fantasy II Anniversary Edition","Theatrhythm: Final Fantasy","Final Fantasy Crystal Chronicles: Echoes of Time","Final Fantasy Collection","Final Fantasy Crystal Chronicles: The Crystal Bearers","Final Fantasy Adventure","Theatrhythm Final Fantasy: Curtain Call","Final Fantasy XI","Final Fantasy IV","Final Fantasy XI: Wings of the Goddess","Lightning Returns: Final Fantasy XIII","Final Fantasy X-2: International + Last Mission","Final Fantasy VI Advance","Final Fantasy X International","Final Fantasy XI: Ultimate Collection","Final Fantasy V Advance","Final Fantasy XI: Chains of Promathia","Final Fantasy Fables: Chocobo Tales","Final Fantasy XI: Treasures of Aht Urhgan","Final Fantasy Fables: Chocobo's Dungeon","Final Fantasy XI","Final Fantasy XI: Vana'diel Collection","Final Fantasy XI: Rise of the Zilart","Final Fantasy XIV: Heavensward","Dragon Quest & Final Fantasy in Itadaki Street Portable","Final Fantasy XII International Zodiac Job System","Final Fantasy VI","Final Fantasy XI: Vana'diel Collection 2008","Dissidia: Final Fantasy Universal Tuning","Final Fantasy XI: All-In-One Pack 2006"), "Final Fantasy", Name)) %>% 
-  mutate(Name = ifelse(Name %in% c("FIFA 16","FIFA 14","FIFA 12","FIFA 15","FIFA Soccer 13","FIFA Soccer 11","FIFA 17","FIFA Soccer 06","FIFA Soccer 07","FIFA Soccer 2005","FIFA Soccer 10","FIFA Soccer 2004","FIFA Soccer 2003","FIFA Soccer 08","FIFA Soccer 09","FIFA 2000","FIFA Street","2010 FIFA World Cup South Africa","FIFA Soccer 09 All-Play","FIFA Soccer World Championship","FIFA: Road to World Cup 98","2014 FIFA World Cup Brazil","FIFA Soccer 2002","FIFA Soccer","2002 FIFA World Cup","FIFA: Road to  World Cup 98","FIFA World Cup Germany 2006","FIFA 99","FIFA Soccer 64","FIFA Street 2","FIFA Street 3","FIFA 2001 Major League Soccer","FIFA Soccer 96","FIFA Soccer 97","FIFA 06: Road to FIFA World Cup","FIFA 06 Soccer","Project FIFA World Cup","FIFA 2001: Major League Soccer","FIFA Manager 12","FIFA Soccer 2003 (weekly jp sales)","FIFA World Cup: Germany 2006"), "Fifa", Name)) %>% 
+                                   "Hey You, Pikachu!"),
+                       "Pokemon", Name)) %>% 
+  mutate(Name = ifelse(Name %in% c("Pac-Man Collection",
+                                   "Pac-Man: Adventures in Time",
+                                   "Ms. Pac-Man","Pac-Man",
+                                   "Jr. Pac-Man",
+                                   "Pac-Man Player's Choice Bundle",
+                                   "Pac-Man Party","Classic NES Series: Pac-Man",
+                                   "Pac-Man All-Stars","Pac-Man Fever",
+                                   "Pac-Pix",
+                                   "Ms. Pac-Man: Maze Madness / Pac-Man World",
+                                   "Ms. Pac-Man: Maze Madness","Pac-Man & Galaga Dimensions",
+                                   "Pac-Man Party 3D",
+                                   "Pac-Man Pinball Advance",
+                                   "Pac-Man World 2",
+                                   "Pac-Man Power Pack",
+                                   "Pac-Man World 3",
+                                   "Pac-Man and the Ghostly Adventures 2",
+                                   "PAC-MAN and the Ghostly Adventures",
+                                   "Pac-Man World Rally"), 
+                       "Pac-Man", Name)) %>%
+  mutate(Name = ifelse(Name %in% c("Call of Duty: Modern Warfare 3",
+                                   "Call of Duty: Black Ops",
+                                   "Call of Duty: Black Ops 3",
+                                   "Call of Duty: Black Ops II",
+                                   "Call of Duty: Modern Warfare 2",
+                                   "Call of Duty: Ghosts",
+                                   "Call of Duty 4: Modern Warfare",
+                                   "Call of Duty: Advanced Warfare",
+                                   "Call of Duty: World at War",
+                                   "Call of Duty: Finest Hour",
+                                   "Call of Duty 3",
+                                   "Call Of Duty 2: Big Red One",
+                                   "Call of Duty: Roads to Victory",
+                                   "Call of Duty 2",
+                                   "Call of Duty: World at War",
+                                   "Call of Duty: World at War Final Fronts",
+                                   "Call of Duty Black Ops: Declassified",
+                                   "Call of Duty: Modern Warfare: Reflex Edition", 
+                                   "Call of Duty: Modern Warfare: Mobilized",
+                                   "Call of Duty: Modern Warfare 3: Defiance",
+                                   "Call of Duty: The War Collection",
+                                   "Call of Duty: Modern Warfare Trilogy"), 
+                       "Call of Duty", Name)) %>% 
+  mutate(Name = ifelse(Name %in% c("The Sims 3",
+                                   "The Sims: Unleashed",
+                                   "MySims",
+                                   "The Sims: Vacation",
+                                   "The Sims: Livin Large",
+                                   "The Sims 4","The Sims",
+                                   "The Sims: Bustin' Out",
+                                   "The Sims: House Party",
+                                   "The Sims 2: Pets",
+                                   "The Sims: Makin' Magic",
+                                   "The Sims: Hot Date",
+                                   "The Urbz: Sims in the City",
+                                   "The Sims 3: Late Night Expansion Pack",
+                                   "The Sims: Superstar",
+                                   "MySims",
+                                   "MySims Kingdom",
+                                   "The Sims 2",
+                                   "The Sims 2: Nightlife",
+                                   "The Sims 2: Castaway",
+                                   "MySims Agents",
+                                   "The Sims 2: Apartment Pets",
+                                   "The Sims: Medieval",
+                                   "The Sims 3: High-End Loft Stuff",
+                                   "The Sims 3: Generations",
+                                   "MySims Racing",
+                                   "The Sims 3: World Adventures",
+                                   "The Sims 2: Open for Business",
+                                   "The Sims 3: Ambitions",
+                                   "The Sims 3: Outdoor Living Stuff",
+                                   "The Urbz: Sims in the City (all regions sales)",
+                                   "The Sims 3: Town Life Stuff",
+                                   "MySims SkyHeroes",
+                                   "MySims Party",
+                                   "The Sims 4: Get Together",
+                                   "The Sims 3: Seasons",
+                                   "The Sims Medieval: Pirates and Nobles",
+                                   "MySims Collection",
+                                   "The Sims 2: Apartment Life",
+                                   "The Sims 2: Ikea Home Stuff",
+                                   "The Sims 3: Fast Lane Stuff",
+                                   "The Sims 3: Barnacle Bay",
+                                   "The Sims 2: Seasons",
+                                   "The Sims 2: University",
+                                   "The Sims Deluxe",
+                                   "The Sims 4: Spa Day",
+                                   "The Sims 2: Glamour Life Stuff",
+                                   "The Sims 2: Bon Voyage",
+                                   "The Sims: Complete Collection",
+                                   "The Sims 2: Happy Holiday Stuff",
+                                   "The Sims 2: Family Fun Stuff",
+                                   "The Sims 4: Luxury Party Stuff"),
+                       "The Sims", Name)) %>% 
+  mutate(Name = ifelse(Name %in% c("Final Fantasy VII",
+                                   "Final Fantasy X",
+                                   "Final Fantasy VIII",
+                                   "Final Fantasy XII",
+                                   "Final Fantasy XIII",
+                                   "Final Fantasy IX",
+                                   "Final Fantasy X-2",
+                                   "Final Fantasy III",
+                                   "Crisis Core: Final Fantasy VII",
+                                   "Final Fantasy XIII-2",
+                                   "Final Fantasy V",
+                                   "Final Fantasy Tactics",
+                                   "Dissidia: Final Fantasy",
+                                   "Final Fantasy Tactics Advance",
+                                   "Final Fantasy II",
+                                   "Final Fantasy XIV: A Realm Reborn",
+                                   "Final Fantasy: Crystal Chronicles",
+                                   "Dirge of Cerberus: Final Fantasy VII",
+                                   "Final Fantasy XII: Revenant Wings",
+                                   "Final Fantasy X / X-2 HD Remaster",
+                                   "Final Fantasy IV",
+                                   "Final Fantasy I & II: Dawn of Souls",
+                                   "Final Fantasy Tactics: The War of the Lions",
+                                   "The Final Fantasy Legend",
+                                   "Lightning Returns: Final Fantasy XIII",
+                                   "Final Fantasy Type-0",
+                                   "Dissidia 012: Duodecim Final Fantasy",
+                                   "Final Fantasy",
+                                   "Final Fantasy XI: Wings of the Goddess",
+                                   "Final Fantasy Anthology",
+                                   "Final Fantasy Tactics A2: Grimoire of the Rift",
+                                   "Final Fantasy Legend III",
+                                   "Final Fantasy Crystal Chronicles: Ring of Fates",
+                                   "Final Fantasy VII International",
+                                   "Final Fantasy IV Advance",
+                                   "Final Fantasy: The 4 Heroes of Light",
+                                   "Final Fantasy Anniversary Edition",
+                                   "Final Fantasy IV: The Complete Collection",
+                                   "Final Fantasy Chronicles",
+                                   "Final Fantasy Explorers",
+                                   "Final Fantasy II Anniversary Edition",
+                                   "Theatrhythm: Final Fantasy",
+                                   "Final Fantasy Crystal Chronicles: Echoes of Time",
+                                   "Final Fantasy Collection",
+                                   "Final Fantasy Crystal Chronicles: The Crystal Bearers",
+                                   "Final Fantasy Adventure",
+                                   "Theatrhythm Final Fantasy: Curtain Call",
+                                   "Final Fantasy XI",
+                                   "Final Fantasy IV",
+                                   "Final Fantasy XI: Wings of the Goddess",
+                                   "Lightning Returns: Final Fantasy XIII",
+                                   "Final Fantasy X-2: International + Last Mission",
+                                   "Final Fantasy VI Advance",
+                                   "Final Fantasy X International",
+                                   "Final Fantasy XI: Ultimate Collection",
+                                   "Final Fantasy V Advance",
+                                   "Final Fantasy XI: Chains of Promathia",
+                                   "Final Fantasy Fables: Chocobo Tales",
+                                   "Final Fantasy XI: Treasures of Aht Urhgan",
+                                   "Final Fantasy Fables: Chocobo's Dungeon",
+                                   "Final Fantasy XI",
+                                   "Final Fantasy XI: Vana'diel Collection",
+                                   "Final Fantasy XI: Rise of the Zilart",
+                                   "Final Fantasy XIV: Heavensward",
+                                   "Dragon Quest & Final Fantasy in Itadaki Street Portable",
+                                   "Final Fantasy XII International Zodiac Job System",
+                                   "Final Fantasy VI",
+                                   "Final Fantasy XI: Vana'diel Collection 2008",
+                                   "Dissidia: Final Fantasy Universal Tuning",
+                                   "Final Fantasy XI: All-In-One Pack 2006"), 
+                       "Final Fantasy", Name)) %>% 
+  mutate(Name = ifelse(Name %in% c("FIFA 16",
+                                   "FIFA 14",
+                                   "FIFA 12",
+                                   "FIFA 15",
+                                   "FIFA Soccer 13",
+                                   "FIFA Soccer 11",
+                                   "FIFA 17",
+                                   "FIFA Soccer 06",
+                                   "FIFA Soccer 07",
+                                   "FIFA Soccer 2005",
+                                   "FIFA Soccer 10",
+                                   "FIFA Soccer 2004",
+                                   "FIFA Soccer 2003",
+                                   "FIFA Soccer 08",
+                                   "FIFA Soccer 09",
+                                   "FIFA 2000",
+                                   "FIFA Street",
+                                   "2010 FIFA World Cup South Africa",
+                                   "FIFA Soccer 09 All-Play",
+                                   "FIFA Soccer World Championship",
+                                   "FIFA: Road to World Cup 98",
+                                   "2014 FIFA World Cup Brazil",
+                                   "FIFA Soccer 2002",
+                                   "FIFA Soccer",
+                                   "2002 FIFA World Cup",
+                                   "FIFA: Road to  World Cup 98",
+                                   "FIFA World Cup Germany 2006",
+                                   "FIFA 99",
+                                   "FIFA Soccer 64",
+                                   "FIFA Street 2",
+                                   "FIFA Street 3",
+                                   "FIFA 2001 Major League Soccer",
+                                   "FIFA Soccer 96",
+                                   "FIFA Soccer 97",
+                                   "FIFA 06: Road to FIFA World Cup",
+                                   "FIFA 06 Soccer",
+                                   "Project FIFA World Cup",
+                                   "FIFA 2001: Major League Soccer",
+                                   "FIFA Manager 12",
+                                   "FIFA Soccer 2003 (weekly jp sales)",
+                                   "FIFA World Cup: Germany 2006"), 
+                       "Fifa", Name)) %>% 
   group_by(Name) %>% 
   summarise(tgvs = sum(Global_Sales)) %>% 
   filter(Name =="Minecraft" | Name == "Grand Theft Auto" | Name == "Tetris"|
@@ -437,8 +640,7 @@ We learned how to create multi-layered charts that show more than just a x and y
 
 ### Challenges: 
 
-Throughout our exploration of the data, we saw several limitations that prevented us from doing exactly what we wanted to do. These included the types of variables used for genre as what constituted what as a genre in games as well as multi-genred games. From our experience, we thought that some games could be classified as other genres from what it was in the dataset. The dataset was quite limited as we wanted look at the sales in specific regions around the world but there was only specific details about major contributors to the industry. 
-
+Throughout our exploration of the data, we saw several limitations that prevented us from doing exactly what we wanted to do. These included the types of variables used for genre as we wanted to know what constituted what as a genre in games as well as multi-genred games. From our experience, we thought that some games could be classified as other genres from what it was in the dataset. The dataset was quite limited as we wanted look at the sales in specific regions around the world but there was only specific details about major contributors to the industry. 
 
 ### Conclusion: 
 
